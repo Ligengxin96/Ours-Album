@@ -31,7 +31,8 @@ const Form = () => {
     setPostData({ ...postData, selectedFile: file.base64 });
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     dispatch(createPost(postData));
     clear();
   }
