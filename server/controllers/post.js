@@ -5,7 +5,7 @@ export const getPosts = async (_, res) => {
     try {
         const post = await PostMessage.find();
         const resData = processResponseData(200, post);
-        res.status(200).json(200, resData);
+        res.status(200).json(resData);
     } catch (error) {
         const resData = processResponseData(404, [], error.message);
         res.status(404).json(resData);
@@ -13,8 +13,8 @@ export const getPosts = async (_, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const { title, message, selectedFile, creator, tags } = req.body;
-    const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
+    const { creator, title, message, tags, selectedFile } = req.body;
+    const newPostMessage = new PostMessage({ creator, title, message, tags, selectedFile })
     try {
         const savedPostMessage = await newPostMessage.save();
         const resData = processResponseData(201, savedPostMessage);
