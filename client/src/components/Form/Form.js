@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 
@@ -14,9 +14,15 @@ const FIELDS_CONFIG = [
   { name: 'tags', label: '标签(逗号分隔)' }
 ]
 
-const Form = () => {
+const Form = ({ id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const editingPost = useSelector((state) => {
+    return state.posts.find((post) => {
+      return post._id === id;
+    });
+  });
+
   const [postData , setPostData ] = useState({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
 
   const onFieldChange = (e, fieldName) => {
@@ -37,6 +43,12 @@ const Form = () => {
     clear();
   }
 
+  useEffect(() => {
+    if (editingPost) {
+      setPostData(editingPost)
+    };
+  }, [editingPost]);
+
   return (
     <Paper className={classes.paper}>
       <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`} onSubmit={onSubmit}>
@@ -48,7 +60,7 @@ const Form = () => {
           })
         }
         <div className={classes.filedInput} >
-          <FileBase type='file' multiple={false} onDone={uploadFile} /> 
+          <FileBase type='file' value={postData.selectedFile} multiple={false} onDone={uploadFile} /> 
         </div>
         <Button className={classes.buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>创建</Button>
         <Button variant='contained' color='secondary' size='small' fullWidth onClick={clear}>取消</Button>
