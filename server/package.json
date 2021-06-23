@@ -12,7 +12,6 @@
   "author": "Gengxin Li <Ligengxin96@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "body-parse": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
