@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "name": "Launch Client Program",
+      "name": "Debug Client Program",
       "request": "launch",
       "type": "pwa-chrome",
       "url": "http://localhost:3000",
