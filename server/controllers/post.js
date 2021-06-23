@@ -43,10 +43,30 @@ export const updatePost = async (req, res) => {
             return res.status(404).send(resData)
         }
         const newPost = { creator, title, message, tags, selectedFile, _id: id };
-        const updatePost = await PostMessage.findByIdAndUpdate(id, newPost, { new: true });
-        const resData = processResponseData(201, updatePost);
-        console.log(new Date(), 'Update post successful. Updated post id:', JSON.stringify(updatePost._id));
-        res.status(201).json(resData);
+        const updatedPost = await PostMessage.findByIdAndUpdate(id, newPost, { new: true });
+        const resData = processResponseData(200, updatedPost);
+        console.log(new Date(), 'Update post successful. Updated post id:', JSON.stringify(updatedPost._id));
+        res.status(200).json(resData);
+    } catch (error) {
+        const resData = processResponseData(409, [], error.message);
+        console.log(new Date(), 'Error occrence when update posts with error: ', error.message);
+        res.status(404).json(resData);
+    }
+}
+
+export const deletePost = async (req, res) => {
+    try {
+        console.log(new Date(), 'Deleting post...');
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
+            console.log(`${new Date()}, Delete post failed. Can't find the post with id: ${id}`);
+            return res.status(404).send(resData)
+        }
+        const deletedPost = await PostMessage.findByIdAndRemove(id);
+        const resData = processResponseData(200, deletedPost);
+        console.log(new Date(), 'Delete post successful. Delete post id:', JSON.stringify(deletedPost._id));
+        res.status(200).json(resData);
     } catch (error) {
         const resData = processResponseData(409, [], error.message);
         console.log(new Date(), 'Error occrence when update posts with error: ', error.message);

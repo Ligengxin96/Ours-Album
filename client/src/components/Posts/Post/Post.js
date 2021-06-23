@@ -1,19 +1,28 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
+import { deletePost } from '../../../actions/posts'
+
 import nullImage from '../../../images/null.png';
 import useStyles from './styles';
 
 const Post = ({ post, setEditingPostId }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const editPost = (id) => {
     setEditingPostId(id);
   }
+
+  const deleteThisPost = (id) => {
+    dispatch(deletePost(id));
+  }
+
   return (
     <Card className={classes.card}>
       <CardMedia className={classes.media} title={post.title} image={post.selectedFile || nullImage} />
@@ -33,7 +42,7 @@ const Post = ({ post, setEditingPostId }) => {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button size="small" color="primary"><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
-        <Button size="small" color="primary"><DeleteIcon fontSize="small" /></Button>
+        <Button size="small" color="primary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>
       </CardActions>
     </Card>
   )

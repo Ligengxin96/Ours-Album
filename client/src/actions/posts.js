@@ -26,3 +26,12 @@ export const updatePost = (id, newPost) => async (dispatch) => {
     console.log('Error occurrence when update post with error:', error.message);
   }
 }
+
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    const { data } = await apis.deletePost(id);
+    dispatch({ type: 'DELETE', payload: data.data });
+  } catch (error) {
+    console.log('Error occurrence when delete post with error:', error.message);
+  }
+}
