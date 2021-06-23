@@ -1,7 +1,13 @@
 {
   "configurations": [
     {
-      "name": "Launch Program",
+      "name": "Launch Client Program",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/client/src/index.js"
+    }, {
+      "name": "Debug Server Program",
       "program": "${workspaceFolder}/server/index.js",
       "request": "launch",
       "skipFiles": [

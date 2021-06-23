@@ -32,7 +32,7 @@ const App = () => {
               <Posts setEditingPostId={setEditingPostId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form id={editingPostId} />
+              <Form id={editingPostId} setEditingPostId={setEditingPostId} />
             </Grid>
           </Grid>
         </Container>

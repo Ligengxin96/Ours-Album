@@ -8,7 +8,6 @@ import useStyles from './styles';
 
 const Posts = ({ setEditingPostId }) => {
   const posts = useSelector((state) => state.posts);
-  console.log('posts component:', posts)
   const classes = useStyles();
   return (
     <div>

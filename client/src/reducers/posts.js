@@ -1,11 +1,13 @@
  const postsReducer = (posts = [], action) => {
-  console.log('post reducer action.payload: ', action.payload);
-  console.log('post reducer posts: ', posts);
+  const { payload } = action;
   switch (action.type) {
     case "FETCH_ALL":
-      return action.payload;
+      return payload;
     case "CREATE":
-      return [...posts, ...action.payload];
+      return [...posts, ...payload];
+    case "UPDATE":
+      const updatedPost = payload[0];
+      return posts.map((post) => post._id === updatedPost._id ? updatedPost : post);
     default:
       return posts;
   }
