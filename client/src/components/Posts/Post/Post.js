@@ -8,7 +8,7 @@ import moment from 'moment';
 
 import DeleteConfirm  from './DeleteConfirm/deleteConfirm';
 
-import { deletePost } from '../../../actions/posts'
+import { deletePost, likePost } from '../../../actions/posts'
 
 import nullImage from '../../../images/null.png';
 import useStyles from './styles';
@@ -41,6 +41,10 @@ const Post = ({ post, setEditingPostId }) => {
     handleClickOpen();
   }
 
+  const likeThisPost = (id) => {
+    dispatch(likePost(id));
+  }
+
   return (
     <div>
       <Card className={classes.card}>
@@ -60,8 +64,8 @@ const Post = ({ post, setEditingPostId }) => {
           <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary"><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
-          <Button size="small" color="primary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>
+          <Button size="small" color="primary" onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likeCount}</span></Button>
+          <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>
         </CardActions>
       </Card>
        <DeleteConfirm isOpen={open} handleClose={handleClose} />

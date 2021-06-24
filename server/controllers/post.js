@@ -40,7 +40,7 @@ export const updatePost = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
             console.log(`${new Date()}, Update post failed. Can't find the post with id: ${id}`);
-            return res.status(404).send(resData)
+            return res.status(404).send(resData);
         }
         const newPost = { creator, title, message, tags, selectedFile, _id: id };
         const updatedPost = await PostMessage.findByIdAndUpdate(id, newPost, { new: true });
@@ -50,6 +50,29 @@ export const updatePost = async (req, res) => {
     } catch (error) {
         const resData = processResponseData(409, [], error.message);
         console.log(new Date(), 'Error occrence when update posts with error: ', error.message);
+        res.status(404).json(resData);
+    }
+}
+
+export const likePost = async (req, res) => {
+    try {
+        console.log(new Date(), 'Likeing post...');
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
+            console.log(`${new Date()}, Like post failed. Can't find the post with id: ${id}`);
+            return res.status(404).send(resData);
+        }
+        console.log(new Date(), 'Finding post...');
+        const post = await PostMessage.findById(id);
+        console.log(new Date(), 'Get post successful. Finded post id:', post._id);
+        const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true });
+        const resData = processResponseData(200, updatedPost);
+        console.log(new Date(), 'Update post successful. Updated post id:', JSON.stringify(updatedPost._id));
+        res.status(200).json(resData);
+    } catch (error) {
+        const resData = processResponseData(409, [], error.message);
+        console.log(new Date(), 'Error occrence when like posts with error: ', error.message);
         res.status(404).json(resData);
     }
 }
