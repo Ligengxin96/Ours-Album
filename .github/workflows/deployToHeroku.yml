@@ -1,0 +1,31 @@
+name: Deploy Ours Album Server To Heroku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - run: yarn
+        env:
+          CONNECTION_URL: ${{secrets.CONNECTION_URL}}
+        
+      - name: Deploy To Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "ours-album-server"
+          heroku_email: "ligengxin96@gmail.com"
+          appdir: server
+
