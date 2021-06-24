@@ -7,12 +7,12 @@ import Post from './Post/Post';
 import useStyles from './styles';
 
 const Posts = ({ setEditingPostId }) => {
-  const posts = useSelector((state) => state.posts);
+  const { posts, isLoading } = useSelector((state) => state.posts);
   const classes = useStyles();
   return (
     <div>
       {
-        posts.length === 0 ? <CircularProgress /> :
+        isLoading ? <CircularProgress /> :
         <Grid className={classes.container} container alignItems="stretch" spacing={3}>
           { 
             posts.map((post, index) => {

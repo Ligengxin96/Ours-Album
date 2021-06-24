@@ -18,7 +18,8 @@ const Form = ({ id, setEditingPostId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const editingPost = useSelector((state) => {
-    return state.posts.find((post) => {
+    const { posts } = state.posts;
+    return posts.find((post) => {
       return post._id === id;
     });
   });
