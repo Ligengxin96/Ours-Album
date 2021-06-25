@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 14.x
       - run: cd client && yarn
-      - run: yarn run build
+      - run: cd client && yarn run build
       
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
