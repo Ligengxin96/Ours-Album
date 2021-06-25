@@ -13,12 +13,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       
-      - run: cd client
-      
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './build'
+          publish-dir: './client/build'
           production-branch: main
           github-token: ${{ secrets.NETLIFY_DEPLOY_KEY }}
           deploy-message: "Deploy from GitHub Actions"
