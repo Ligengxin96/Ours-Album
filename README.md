@@ -10,4 +10,4 @@ client folder is frontend project and server folder is backend project
 
 1. clone this repo: `https://github.com/Ligengxin96/Ours-Album.git`
 2. in both clinet folder and server folder run: `yarn` or `npm install` to install dependencies
-3. in both clinet folder and server folder run: `yarn start` to start the server in localhost
+3. in both clinet folder and server folder run: `yarn start` or 'npm start' to start the server in localhost
