@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-        run: cd client
+      
+      - run: cd client
       
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
