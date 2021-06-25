@@ -42,7 +42,7 @@ export const updatePost = async (req, res) => {
             console.log(`${new Date()}, Update post failed. Can't find the post with id: ${id}`);
             return res.status(404).send(resData);
         }
-        const newPost = { creator, title, message, tags, selectedFile, _id: id };
+        const newPost = { creator, title, message, tags, selectedFile, _id: id, lastestUpdateTime: new Date() };
         const updatedPost = await PostMessage.findByIdAndUpdate(id, newPost, { new: true });
         const resData = processResponseData(200, updatedPost);
         console.log(new Date(), 'Update post successful. Updated post id:', JSON.stringify(updatedPost._id));
