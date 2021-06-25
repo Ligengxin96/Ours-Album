@@ -61,7 +61,7 @@ const Post = ({ post, setEditingPostId }) => {
         </div>
         <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
         <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
+          <Typography className={classes.message} variant="body2" color="textSecondary" component="p">{post.message}</Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button size="small" color="primary" onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likeCount}</span></Button>

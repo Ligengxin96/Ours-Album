@@ -51,5 +51,8 @@ export default makeStyles({
   },
   likes: {
     paddingLeft: '3px',
+  },
+  message: {
+    minHeight: '60px',
   }
 });
