@@ -7,6 +7,8 @@ import postRouter from './routes/post.js';
 
 dotenv.config();
 
+mongoose.set('useFindAndModify', false);
+
 const port = process.env.PORT || 5000;
 const databaseConnectStr = process.env.CONNECTION_URL;
 
