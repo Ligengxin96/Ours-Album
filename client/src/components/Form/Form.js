@@ -24,6 +24,7 @@ const Form = ({ id, setEditingPostId }) => {
     });
   });
 
+  const formRef = React.createRef();
   const [postData , setPostData] = useState({ creator: '', title: '', message: '', tags: [], selectedFile: '' });
 
   const onFieldChange = (e, fieldName) => {
@@ -37,6 +38,7 @@ const Form = ({ id, setEditingPostId }) => {
   const clear = () => {
     setPostData({ creator: '', title: '', message: '', tags: [], selectedFile: '' });
     setEditingPostId(null);
+    formRef.current.reset();
   }
 
   const uploadFile = (file) => {
@@ -61,17 +63,17 @@ const Form = ({ id, setEditingPostId }) => {
 
   return (
     <Paper className={classes.paper}>
-      <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`} onSubmit={onSubmit}>
+      <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`} onSubmit={onSubmit} ref={formRef}>
         <Typography variant='h6'>{ `${id ? '编辑': '创建'}我们的回忆` }</Typography>
-        {
-          FIELDS_CONFIG.map((field) => {
-            const { name, label, multiline = false } = field;
-            return <TextField value={postData[name]} onChange={(e) => onFieldChange(e, name)} name={name} label={label} multiline={multiline} key={name} variant='outlined' fullWidth />
-          })
-        }
-        <div className={classes.filedInput} >
-          <FileBase type='file' value={postData.selectedFile} multiple={false} onDone={uploadFile} /> 
-        </div>
+          {
+            FIELDS_CONFIG.map((field) => {
+              const { name, label, multiline = false } = field;
+              return <TextField value={postData[name]} onChange={(e) => onFieldChange(e, name)} name={name} label={label} multiline={multiline} key={name} variant='outlined' fullWidth />
+            })
+          }
+          <div className={classes.filedInput} >
+            <FileBase onDone={uploadFile} /> 
+          </div>
         <Button className={classes.buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>提交</Button>
         <Button variant='contained' color='secondary' size='small' fullWidth onClick={clear}>取消</Button>
       </form>
