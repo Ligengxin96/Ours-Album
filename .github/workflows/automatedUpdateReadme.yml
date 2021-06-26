@@ -1,0 +1,41 @@
+name: Automated Update README
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/automatedUpdateReadme.yml
+
+jobs:
+  markscribe:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: github-update-readme-V2.0
+        uses: Ligengxin96/github-update-readme@v1.7.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_README_PAT }}
+        with:
+          showTrafficData: true
+          header: About Ours-Album
+          subhead: |
+                  This is my first node.js full stack project.
+
+                  Using `react, redux, redux-thunk, express and MongoDB`
+                  
+                  The client folder is frontend project and the server folder is backend project
+
+                  ## How to start the project
+                  
+                  1. Clone this repo: `https://github.com/Ligengxin96/Ours-Album.git`
+                  2. In both clinet folder and server folder run: `yarn` or `npm install` to install dependencies
+                  3. In both clinet folder and server folder run: `yarn start` or `npm start` to start the server in localhost
+
+                  ## Repo traffic data
+
+                  Total views data: `'{viewsData}'`
+
+                  Total clones data: `'{clonesData}'`
