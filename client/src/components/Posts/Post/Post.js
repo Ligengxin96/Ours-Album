@@ -6,7 +6,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
-import DeleteConfirm  from './DeleteConfirm/deleteConfirm';
+// import DeleteConfirm  from './DeleteConfirm/deleteConfirm';
+import DeleteConfirm  from '../../common/ConfirmDialog/ConfirmDialog';
 
 import { deletePost, likePost } from '../../../actions/posts'
 
@@ -68,7 +69,7 @@ const Post = ({ post, setEditingPostId }) => {
           <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>
         </CardActions>
       </Card>
-       <DeleteConfirm isOpen={open} handleClose={handleClose} />
+       <DeleteConfirm isOpen={open} handleClose={handleClose} title='确定要删除吗？' content='删除后内容将永久丢失,无法恢复!' />
     </div>
   )
 };

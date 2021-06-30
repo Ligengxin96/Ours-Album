@@ -4,7 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import useStyles from './styles';
 
-const DeleteConfirm = ({ isOpen = false, handleClose }) => {
+const ConfirmDialog = ({ isOpen = false, handleClose, title, content }) => {
   const classes = useStyles();
   return (
     <div>
@@ -15,7 +15,7 @@ const DeleteConfirm = ({ isOpen = false, handleClose }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" className={classes.title}>
-          确定要删除吗？
+          {title}
           {
             handleClose ? (
               <IconButton aria-label="close" onClick={() => handleClose(0)}>
@@ -25,7 +25,7 @@ const DeleteConfirm = ({ isOpen = false, handleClose }) => {
           }
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">删除后内容将永久丢失,无法恢复!</DialogContentText>
+          <DialogContentText id="alert-dialog-description">{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleClose(0)} color="primary">
@@ -40,4 +40,4 @@ const DeleteConfirm = ({ isOpen = false, handleClose }) => {
   );
 }
 
-export default DeleteConfirm;
+export default ConfirmDialog;

@@ -1,9 +1,6 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-const url = process.env.ENV === 'dev' ? "http://localhost:5000/v1/post" : "http://ours-album-server.herokuapp.com/v1/post";
+const url = process.env.NODE_ENV === 'development' ? "http://localhost:5000/v1/post" : "http://ours-album-server.herokuapp.com/v1/post";
 
 export const fetchPosts = () => axios.get(url);
 
