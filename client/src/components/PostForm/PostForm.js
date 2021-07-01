@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
@@ -16,6 +16,7 @@ const FIELDS_CONFIG = [
 
 const Form = ({ id, setEditingPostId }) => {
   const classes = useStyles();
+  const formRef = useRef();
   const dispatch = useDispatch();
   const editingPost = useSelector((state) => {
     const { posts } = state.posts;
@@ -24,7 +25,6 @@ const Form = ({ id, setEditingPostId }) => {
     });
   });
 
-  const formRef = React.createRef();
   const [postData , setPostData] = useState({ creator: '', title: '', message: '', tags: [], selectedFile: '' });
 
   const onFieldChange = (e, fieldName) => {
