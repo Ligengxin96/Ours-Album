@@ -5,7 +5,7 @@ export const processResponseData = (httpCode, data = [], additionalMessage = '')
   if (SUCCESS_HTTP_CODE.includes(httpCode)) {
       message = additionalMessage ? `Successful. ${additionalMessage}` : 'Successful'
   } else {
-      message = additionalMessage ? `faild. ${additionalMessage}` : 'faild'
+      message = additionalMessage ? `Faild. ${additionalMessage}` : 'Faild'
   }
 
   if (Array.isArray(data)) {

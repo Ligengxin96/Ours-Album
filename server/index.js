@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import postRouter from './routes/post.js';
+import userRouter from './routes/user.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json({ limit: '30mb', extended: true }));
 app.use(express.urlencoded({ limit: '30mb', extended: true }));
 
 app.use('/v1/post', postRouter);
+app.use('/v1/user', userRouter);
 
 mongoose.connect(databaseConnectStr, { 
   useNewUrlParser: true, 
