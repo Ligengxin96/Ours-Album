@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Container, Grow, Grid } from '@material-ui/core';
 
 import Posts from '../Posts/Posts';
-import Form from '../Form/Form';
+import Form from '../PostForm/PostForm';
 
 import { getPosts } from '../../actions/posts';
 

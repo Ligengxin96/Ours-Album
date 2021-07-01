@@ -1,15 +1,16 @@
 import * as apis from '../apis';
 
-import { START_LOADING, END_LOADING, FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/postType.js';
+import { START_LOADING, END_LOADING, FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/constantsType.js';
 
 export const getPosts = () => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await apis.fetchPosts();
     dispatch({ type: FETCH_ALL, payload: data.data });
-    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log('Error occurrence when fetch all posts with error:', error.message);
+  } finally {
+    dispatch({ type: END_LOADING });
   }
 }
 
