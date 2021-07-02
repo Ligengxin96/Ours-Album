@@ -1,4 +1,4 @@
- import { START_LOADING, END_LOADING, FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/postType.js';
+ import { START_LOADING, END_LOADING, FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/constantsType.js';
  
  const initState = { posts: [], isLoading: false };
  

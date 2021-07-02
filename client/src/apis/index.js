@@ -1,16 +1,45 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
+import { encodeBase64 } from '../utils/crypto';
 
-dotenv.config();
+const postPrefix = '/v1/post';
+const userPrefix = '/v1/user';
 
-const url = process.env.ENV === 'dev' ? "http://localhost:5000/v1/post" : "http://ours-album-server.herokuapp.com/v1/post";
+const baseURL = process.env.NODE_ENV === 'development' ? "http://localhost:5000" : "http://ours-album-server.herokuapp.com";
 
-export const fetchPosts = () => axios.get(url);
+const API = axios.create({ baseURL });
 
-export const createPost = (newPost) => axios.post(url, newPost);
 
-export const updatePost = (id, newPost) => axios.patch(`${url}/${id}`, newPost);
+API.interceptors.request.use((req) => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  if (userInfo?.token) {
+    req.headers.Authorization = `Bearer ${userInfo.token}`;
+  }
+  return req;
+});
 
-export const likePost = (id) => axios.patch(`${url}/likepost/${id}`);
+API.interceptors.response.use((res) => {
+    return res;
+  },
+  (error) => {
+    const { response: { status} } = error;
+    if (status === 403) {
+      const info = encodeBase64(JSON.stringify({ error: 403 }));
+      window.location = `/login/${info}`;
+    }
+    return Promise.reject(error);
+  }
+);
 
-export const deletePost = (id) => axios.delete(`${url}/${id}`);
+export const fetchPosts = () => API.get(`${postPrefix}`);
+
+export const createPost = (newPost) => API.post(`${postPrefix}`, newPost);
+
+export const updatePost = (id, newPost) => API.patch(`${postPrefix}/${id}`, newPost);
+
+export const likePost = (id) => API.patch(`${postPrefix}/likepost/${id}`);
+
+export const deletePost = (id) => API.delete(`${postPrefix}/${id}`);
+
+export const login = (formValues) => API.post(`${userPrefix}/login`, formValues);
+
+export const register = (formValues) => API.post(`${userPrefix}/register`, formValues);

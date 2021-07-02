@@ -6,14 +6,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
-import DeleteConfirm  from './DeleteConfirm/deleteConfirm';
-
+import DeleteConfirm  from '../../common/ConfirmDialog/ConfirmDialog';
 import { deletePost, likePost } from '../../../actions/posts'
 
 import nullImage from '../../../images/null.png';
 import useStyles from './styles';
 
 const Post = ({ post, setEditingPostId }) => {
+  const { userInfo } = JSON.parse(localStorage.getItem('userInfo')) || {};
+
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -54,7 +55,7 @@ const Post = ({ post, setEditingPostId }) => {
           <Typography variant="body2">{moment(post.createdTime).fromNow()}</Typography>
         </div>
         <div className={classes.overlayRight}>
-          <Button style={{ color: 'white' }} size="small" onClick={() => editPost(post._id)} ><EditIcon fontSize="default" /></Button>
+          {(userInfo?.id && post.creatorId === userInfo?.id) && <Button style={{ color: 'white' }} size="small" onClick={() => editPost(post._id)} ><EditIcon fontSize="default" /></Button>}
         </div>
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -64,11 +65,11 @@ const Post = ({ post, setEditingPostId }) => {
           <Typography className={classes.message} variant="body2" color="textSecondary" component="p">{post.message}</Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary" onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likeCount}</span></Button>
-          <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>
+          <Button size="small" color="primary" disabled={userInfo?.id == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
+          {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
-       <DeleteConfirm isOpen={open} handleClose={handleClose} />
+       <DeleteConfirm isOpen={open} handleClose={handleClose} title='确定要删除吗？' content='删除后内容将永久丢失,无法恢复!' />
     </div>
   )
 };
