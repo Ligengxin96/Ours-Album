@@ -34,7 +34,7 @@ const Navbar = () => {
       };
     }
     setUser(initUserState);
-  }, [location]);
+  }, [location.pathname]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -43,15 +43,17 @@ const Navbar = () => {
         <img className={classes.image} src={usImgPath} alt="icon" height="60" />
       </div>
       <Toolbar className={classes.toolbar}>
-        {user ? (
+        {
+          user ? (
           <div className={classes.profile}>
             <Avatar className={classes.purple} alt={user.userInfo.name} src={user.userInfo.imageUrl}>{user.userInfo.name.toUpperCase().charAt(0)}</Avatar>
             <Typography className={classes.userName} variant="h6">{user.userInfo.name}</Typography>
             <Button onClick={logout} variant="contained" className={classes.logout} color="secondary">注销</Button>
           </div>
-        ) : (
-          <Button component={Link} to="/login" variant="contained" color="primary">登录</Button>
-        )}
+          ) : (
+            <Button component={Link} to="/login" variant="contained" color="primary">登录</Button>
+          )
+        }
       </Toolbar>
     </AppBar>
   );

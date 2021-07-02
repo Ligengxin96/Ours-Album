@@ -9,7 +9,7 @@ dotenv.config();
 
 const secret = process.env.JWT_SECRET;
 
-const deletePassword = (userInfo) => {
+const deletePasswordFromUserInfo = (userInfo) => {
     return { firstName: userInfo.firstName, lastName: userInfo.lastName, name: userInfo.name, email: userInfo.email };
 }
 
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
 
         console.log(new Date(), `${existUser.email} login success`);
 
-        res.status(200).json({ userInfo: deletePassword(existUser), token, isSuccess: true, message: 'Login success.' });
+        res.status(200).json({ userInfo: deletePasswordFromUserInfo(existUser), token, isSuccess: true, message: 'Login success.' });
     } catch (error) {
         const resData = processResponseData(500, [], `Login failed, server error.`);
         console.error(new Date(), 'Login failed with error: ', error.message);
@@ -66,7 +66,7 @@ export const register = async (req, res) => {
 
         console.log(new Date(), `Create ${email} user success.`);
 
-        res.status(201).json({ userInfo: deletePassword(createdUser), token, isSuccess: true, message: 'Login success.' });
+        res.status(201).json({ userInfo: deletePasswordFromUserInfo(createdUser), token, isSuccess: true, message: 'Login success.' });
     } catch (error) {
         const resData = processResponseData(500, [], `Register failed, server error.`);
         console.error(new Date(), 'Register failed with error: ', error.message);
