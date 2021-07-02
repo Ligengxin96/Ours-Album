@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Avatar, Button, Paper, Grid, Typography, Container, Snackbar } from '@material-ui/core';
@@ -10,20 +10,29 @@ import { LOGIN } from '../../constants/constantsType';
 import Input from './Input/Input';
 import GoogleIcon from './GoogleIcon/GoogleIcon';
 import { login, register } from '../../actions/authorize';
-import { encodeBase64 } from '../../utils/crypto.js';
+import { encodeBase64, decodeBase64 } from '../../utils/crypto.js';
 
 import useStyles from './styles';
 
 
-const Authorize = () => {
+const Authorize = (props) => {
+  const { info } = props.match.params;
+  let error = null;
+  if (info) {
+    error = JSON.parse(decodeBase64(info)).error;
+  }
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const fromRef = useRef();
+  
   const [open, setOpen] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [googleLoginStatus, setGoogleLoginStatus] = useState(true);
+  const [isGoogleLoginSuccess, setisGoogleLoginSuccess] = useState(true);
+  const [alertText, setAlertText] = useState('');
+  const [isTokenExpired, setisTokenExpired] = useState(!!error);
   const [errorText, setErrorText] = useState(null);
   const [formValues, setFormValues] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
 
@@ -39,19 +48,24 @@ const Authorize = () => {
 
   const googleSuccess = async (res) => {
     setOpen(true);
-    setGoogleLoginStatus(true);
-    try {
-      dispatch({ type: LOGIN, payload: { userInfo: res.profileObj, token: res.tokenId } });
-      history.push('/');
-    } catch (error) {
-      console.error(error);
-    }
+    setisGoogleLoginSuccess(true);
+    setAlertText('Google 账户登录成功');
+    setTimeout(() => {
+      try {
+        setisTokenExpired(false);
+        dispatch({ type: LOGIN, payload: { userInfo: res.profileObj, token: res.tokenId } });
+        history.push('/');
+      } catch (error) {
+        console.error(error);
+      }
+    }, 1000);
   };
 
   const googleError = (error) => {
     console.error(`Google acount login failed with error: ${JSON.stringify(error)}`);
     setOpen(true);
-    setGoogleLoginStatus(false);
+    setisGoogleLoginSuccess(false);
+    setAlertText('Google 账户登录失败,请稍后再试');
   };
 
   const handleClose = (_, reason) => {
@@ -74,6 +88,13 @@ const Authorize = () => {
       dispatch(login({...formValues, password }, history));
     }
   }
+
+  useEffect(() => {
+    if (isTokenExpired) {
+      setOpen(true);
+      setAlertText('身份信息失效,请重新登录');
+    }
+  }, [isTokenExpired])
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -120,10 +141,8 @@ const Authorize = () => {
         </form>
       </Paper>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical:'top', horizontal: 'center' }}>
-        <Alert elevation={6} variant="filled" onClose={handleClose} severity={googleLoginStatus ? 'success': 'error' } >
-          {
-            googleLoginStatus ? 'Google 账户登录成功' : 'Google 账户登录失败,请稍后再试'
-          }
+        <Alert elevation={6} variant="filled" onClose={handleClose} severity={isGoogleLoginSuccess && !isTokenExpired ? 'success': 'error' } >
+          {alertText}
         </Alert>
       </Snackbar>
     </Container>

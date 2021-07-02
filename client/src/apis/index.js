@@ -1,20 +1,45 @@
 import axios from 'axios';
+import { encodeBase64 } from '../utils/crypto';
 
 const postPrefix = '/v1/post';
 const userPrefix = '/v1/user';
 
-const host = process.env.NODE_ENV === 'development' ? "http://localhost:5000" : "http://ours-album-server.herokuapp.com";
+const baseURL = process.env.NODE_ENV === 'development' ? "http://localhost:5000" : "http://ours-album-server.herokuapp.com";
 
-export const fetchPosts = () => axios.get(`${host}${postPrefix}`);
+const API = axios.create({ baseURL });
 
-export const createPost = (newPost) => axios.post(`${host}${postPrefix}`, newPost);
 
-export const updatePost = (id, newPost) => axios.patch(`${host}${postPrefix}/${id}`, newPost);
+API.interceptors.request.use((req) => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  if (userInfo?.token) {
+    req.headers.Authorization = `Bearer ${userInfo.token}`;
+  }
+  return req;
+});
 
-export const likePost = (id) => axios.patch(`${host}${postPrefix}/likepost/${id}`);
+API.interceptors.response.use((res) => {
+    return res;
+  },
+  (error) => {
+    const { response: { status} } = error;
+    if (status === 403) {
+      const info = encodeBase64(JSON.stringify({ error: 403 }));
+      window.location = `/login/${info}`;
+    }
+    return Promise.reject(error);
+  }
+);
 
-export const deletePost = (id) => axios.delete(`${host}${postPrefix}/${id}`);
+export const fetchPosts = () => API.get(`${postPrefix}`);
 
-export const login = (formValues) => axios.post(`${host}${userPrefix}/login`, formValues);
+export const createPost = (newPost) => API.post(`${postPrefix}`, newPost);
 
-export const register = (formValues) => axios.post(`${host}${userPrefix}/register`, formValues);
+export const updatePost = (id, newPost) => API.patch(`${postPrefix}/${id}`, newPost);
+
+export const likePost = (id) => API.patch(`${postPrefix}/likepost/${id}`);
+
+export const deletePost = (id) => API.delete(`${postPrefix}/${id}`);
+
+export const login = (formValues) => API.post(`${userPrefix}/login`, formValues);
+
+export const register = (formValues) => API.post(`${userPrefix}/register`, formValues);
