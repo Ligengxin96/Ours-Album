@@ -65,7 +65,7 @@ const Form = ({ id, setEditingPostId }) => {
     return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
-          {`Please login to create your post and like other's post.`}
+          {`请先登录才能创建或修改动态`}
         </Typography>
       </Paper>
     );

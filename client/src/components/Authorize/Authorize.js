@@ -121,7 +121,7 @@ const Authorize = (props) => {
             { isRegister ? '注册' : '登录' }
           </Button>
           <GoogleLogin
-            clientId='586474444278-kujak2tsqj0osdjh5tl4c26l2dm7nnb8.apps.googleusercontent.com'
+            clientId='160069951274-9lk4icl4nvv4lbb61umon883c3rb6dtf.apps.googleusercontent.com'
             render={(renderProps) => (
               <Button onClick={renderProps.onClick} disabled={renderProps.disabled} className={classes.googleButton} fullWidth color='primary' startIcon={<GoogleIcon />} variant='contained'>
                 Google账号登录
