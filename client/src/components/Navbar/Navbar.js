@@ -8,7 +8,6 @@ import { LOGOUT } from '../../constants/constantsType';
 import usImgPath from '../../images/us.png';
 import useStyles from './styles';
 
-
 const Navbar = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -34,6 +33,7 @@ const Navbar = () => {
       };
     }
     setUser(initUserState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (
