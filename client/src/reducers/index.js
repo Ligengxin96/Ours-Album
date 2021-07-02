@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import postsReducer from './posts';
-import loginReducer  from './login';
+import authorizeReducer  from './authorize';
 
 export const reducers = combineReducers({ 
   posts: postsReducer,
-  login: loginReducer,
+  authorize: authorizeReducer,
 });

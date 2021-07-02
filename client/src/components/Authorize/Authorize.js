@@ -10,13 +10,13 @@ import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../../constants/constantsType';
 import Input from './Input/Input';
 import GoogleIcon from './GoogleIcon/GoogleIcon';
-import { login, register } from '../../actions/login';
+import { login, register } from '../../actions/authorize';
 import { encodeBase64 } from '../../utils/crypto.js';
 
 import useStyles from './styles';
 
 
-const Login = () => {
+const Authorize = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -131,4 +131,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Authorize;
