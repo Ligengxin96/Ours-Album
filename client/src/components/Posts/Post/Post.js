@@ -6,14 +6,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
-import DeleteConfirm  from '../../common/ConfirmDialog/ConfirmDialog';
+import DeleteConfirm  from '../../Common/ConfirmDialog/ConfirmDialog';
 import { deletePost, likePost } from '../../../actions/posts'
+import compressionStr from '../../../utils/compressionStr';
 
 import nullImage from '../../../images/null.png';
 import useStyles from './styles';
 
 const Post = ({ post, setEditingPostId }) => {
-  const { userInfo } = JSON.parse(localStorage.getItem('userInfo')) || {};
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -60,9 +61,9 @@ const Post = ({ post, setEditingPostId }) => {
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
         </div>
-        <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
+        <Typography className={classes.title} gutterBottom variant="h5" component="h2" title={post.title}>{compressionStr(post.title, 24)}</Typography>
         <CardContent>
-          <Typography className={classes.message} variant="body2" color="textSecondary" component="p">{post.message}</Typography>
+          <Typography variant="body2" color="textSecondary" component="p" title={post.message}>{compressionStr(post.message, 90)}</Typography>
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button size="small" color="primary" disabled={userInfo?.id == null && userInfo?.googleId == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>

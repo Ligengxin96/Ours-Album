@@ -24,7 +24,7 @@ const Form = ({ id, setEditingPostId }) => {
     });
   });
 
-  const { userInfo } = JSON.parse(localStorage.getItem('userInfo')) || {};
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const [postData , setPostData] = useState({ creator: userInfo?.name, creatorId: userInfo?.id, title: '', message: '', tags: [], selectedFile: '' });
 
   const onFieldChange = (e, fieldName) => {

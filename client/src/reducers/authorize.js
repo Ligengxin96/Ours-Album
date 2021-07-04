@@ -2,7 +2,7 @@ import { LOGIN, LOGOUT, REGISTER } from '../constants/constantsType.js';
  
 const initState = { data: null };
 
-const loginReducer = (state = initState, action) => {
+const authorizeReducer = (state = initState, action) => {
  switch (action.type) {
    case LOGIN:
       localStorage.setItem('userInfo', JSON.stringify(action.payload));
@@ -18,4 +18,4 @@ const loginReducer = (state = initState, action) => {
  }
 };
 
-export default loginReducer;
+export default authorizeReducer;
