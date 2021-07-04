@@ -10,7 +10,6 @@ dotenv.config();
 const secret = process.env.JWT_SECRET;
 
 const processUserInfo = (userInfo, token) => {
-    console.log('userInfo', userInfo);
     return { id: userInfo._id, firstName: userInfo.firstName, lastName: userInfo.lastName, name: userInfo.name, email: userInfo.email, token };
 }
 
@@ -64,7 +63,7 @@ export const register = async (req, res) => {
         const createdUser = await UserModal.create({ firstName, lastName, email, name, password: encodePassword });
         const token = jwt.sign( { email: createdUser.email, username: createdUser.name, id: createdUser._id }, secret, { expiresIn: '2h' } );
         console.log(new Date(), `Create ${email} user success.`);
-        res.status(201).json({ userInfo: processUserInfo(createdUser, token), token, isSuccess: true, message: 'Login success.' });
+        res.status(201).json({ userInfo: processUserInfo(createdUser, token), isSuccess: true, message: 'Login success.' });
     } catch (error) {
         const resData = processResponseData(500, [], `Register failed, server error.`);
         console.error(new Date(), 'Register failed with error: ', error.message);
