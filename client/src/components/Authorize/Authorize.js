@@ -53,7 +53,7 @@ const Authorize = (props) => {
     setTimeout(() => {
       try {
         setisTokenExpired(false);
-        dispatch({ type: LOGIN, payload: { userInfo: res.profileObj, token: res.tokenId } });
+        dispatch({ type: LOGIN, payload: { ...res.profileObj, token: res.tokenId } });
         history.push('/');
       } catch (error) {
         console.error(error);
