@@ -57,7 +57,7 @@ export const register = async (req, res) => {
         }
 
         const encodePassword = hash(password);
-        const name = /^[a-zA-Z]+$/.test(firstName) && /^[a-zA-Z]+$/.test(lastName) ? `${firstName} ${lastName}` : `${firstName}${lastName}`;
+        const name = escape(firstName).indexOf('%u') < 0 && escape(lastName).indexOf('%u') < 0 ? `${firstName} ${lastName}` : `${firstName}${lastName}`;
         console.log(new Date(), `Creating ${email} user.`);
 
         const createdUser = await UserModal.create({ firstName, lastName, email, name, password: encodePassword });

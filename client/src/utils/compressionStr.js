@@ -7,8 +7,7 @@ const compressionStr = (str, length) => {
     throw new Error('length is not a Number');
   }
 
-  // space in regex is necessary because title is a string with spaces
-  length = /^[a-zA-Z ]+$/.test(str) ? length : length / 2;
+  length = escape(str).indexOf('%u') < 0 ? length : length / 2;
 
   if (str.length > length) {
     str = str.substring(0, length) + '...';
