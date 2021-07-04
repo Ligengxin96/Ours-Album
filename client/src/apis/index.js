@@ -24,6 +24,7 @@ API.interceptors.response.use((res) => {
     const { response: { status} } = error;
     if (status === 403) {
       const info = encodeBase64(JSON.stringify({ error: 403 }));
+      localStorage.removeItem('userInfo');
       window.location = `/login/${info}`;
     }
     return Promise.reject(error);
