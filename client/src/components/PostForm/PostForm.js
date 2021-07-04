@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import ChipInput from 'material-ui-chip-input';
 import FileBase from 'react-file-base64';
 
 import { createPost, updatePost } from '../../actions/posts';
@@ -9,8 +10,7 @@ import useStyles from './styles';
 
 const FIELDS_CONFIG = [
   { name: 'title',label: '标题' },
-  { name: 'message', label: '描述', multiline: true, rows: 4 },
-  { name: 'tags', label: '标签(逗号分隔)' }
+  { name: 'message', label: '描述', multiline: true, rows: 4 }
 ]
 
 const Form = ({ id, setEditingPostId }) => {
@@ -55,6 +55,14 @@ const Form = ({ id, setEditingPostId }) => {
     clear();
   }
 
+  const handleAddTag = (tag) => {
+    setPostData({ ...postData, tags: postData.tags.concat(tag) });
+  }
+
+  const handleRemoveTag = (removedTag) => {
+    setPostData({ ...postData, tags: postData.tags.filter((tag) => tag !== removedTag) });
+  }
+
   useEffect(() => {
     if (editingPost) {
       setPostData(editingPost)
@@ -81,6 +89,17 @@ const Form = ({ id, setEditingPostId }) => {
               return <TextField value={postData[name]} onChange={(e) => onFieldChange(e, name)} name={name} label={label} multiline={multiline} key={name} rows={rows} variant='outlined' fullWidth />
             })
           }
+          <div  className={classes.chipInput}>
+            <ChipInput
+              name="tags"
+              label="标签"
+              variant="outlined"
+              fullWidth
+              value={postData.tags}
+              onAdd={(tag) => handleAddTag(tag)}
+              onDelete={(tag) => handleRemoveTag(tag)}
+            />
+          </div>
           <div className={classes.filedInput} >
             <FileBase onDone={uploadFile} /> 
           </div>

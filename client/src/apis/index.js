@@ -31,7 +31,7 @@ API.interceptors.response.use((res) => {
   }
 );
 
-export const fetchPosts = () => API.get(`${postPrefix}`);
+export const fetchPosts = (title, tags, currentPage) => API.get(`${postPrefix}/?title=${title}&tags=${tags.join(',')}&currentPage=${currentPage}`);
 
 export const createPost = (newPost) => API.post(`${postPrefix}`, newPost);
 
