@@ -24,13 +24,14 @@ API.interceptors.response.use((res) => {
     const { response: { status} } = error;
     if (status === 403) {
       const info = encodeBase64(JSON.stringify({ error: 403 }));
+      localStorage.removeItem('userInfo');
       window.location = `/login/${info}`;
     }
     return Promise.reject(error);
   }
 );
 
-export const fetchPosts = () => API.get(`${postPrefix}`);
+export const fetchPosts = (title, tags, currentPage) => API.get(`${postPrefix}/?title=${title}&tags=${tags.join(',')}&currentPage=${currentPage}`);
 
 export const createPost = (newPost) => API.post(`${postPrefix}`, newPost);
 

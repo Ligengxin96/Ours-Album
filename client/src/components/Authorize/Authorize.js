@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import { Avatar, Button, Paper, Grid, Typography, Container, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -53,7 +53,7 @@ const Authorize = (props) => {
     setTimeout(() => {
       try {
         setisTokenExpired(false);
-        dispatch({ type: LOGIN, payload: { userInfo: res.profileObj, token: res.tokenId } });
+        dispatch({ type: LOGIN, payload: { ...res.profileObj, token: res.tokenId } });
         history.push('/');
       } catch (error) {
         console.error(error);
@@ -98,7 +98,7 @@ const Authorize = (props) => {
 
   return (
     <Container component='main' maxWidth='xs'>
-      <Paper className={classes.paper} elevation={3} >
+      <Paper className={classes.paper} elevation={6} >
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -140,7 +140,7 @@ const Authorize = (props) => {
           </Grid>
         </form>
       </Paper>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical:'top', horizontal: 'center' }}>
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical:'top', horizontal: 'center' }}>
         <Alert elevation={6} variant="filled" onClose={handleClose} severity={isGoogleLoginSuccess && !isTokenExpired ? 'success': 'error' } >
           {alertText}
         </Alert>
@@ -149,4 +149,4 @@ const Authorize = (props) => {
   );
 };
 
-export default Authorize;
+export default withRouter(Authorize);

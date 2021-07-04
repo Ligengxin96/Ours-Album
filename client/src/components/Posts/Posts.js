@@ -17,7 +17,7 @@ const Posts = ({ setEditingPostId }) => {
           { 
             posts.map((post, index) => {
               return (
-                <Grid key={index} item xs={12} sm={6} md={6}>
+                <Grid key={index} item xs={12} sm={12} md={6} lg={3}>
                   <Post post={post} setEditingPostId={setEditingPostId} />
                 </Grid>
               )

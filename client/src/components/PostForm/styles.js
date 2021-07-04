@@ -16,10 +16,14 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
   },
   filedInput: {
-    width: '97%',
+    width: '100%',
     margin: '10px 0',
   },
   buttonSubmit: {
     marginBottom: 10,
+  },
+  chipInput: {
+    width: '96%',
+    padding: '5px 0'
   },
 }));

@@ -10,7 +10,7 @@ const errorMessages = {
   500: 'Failed',
 }
 
-export const processResponseData = (httpCode, data = [], additionalMessage = '') => {
+export const processResponseData = (httpCode, data = [], additionalMessage = '', pagination) => {
   let message = errorMessages[httpCode] || '';
   if (SUCCESS_HTTP_CODE.includes(httpCode)) {
       message = additionalMessage ? `${message}. ${additionalMessage}` : message
@@ -23,6 +23,7 @@ export const processResponseData = (httpCode, data = [], additionalMessage = '')
       isSuccess: SUCCESS_HTTP_CODE.includes(httpCode),
       data,
       message,
+      pagination
     };
   }
 
@@ -30,5 +31,6 @@ export const processResponseData = (httpCode, data = [], additionalMessage = '')
     isSuccess: SUCCESS_HTTP_CODE.includes(httpCode),
     data: [data],
     message,
+    pagination
   };
 }
