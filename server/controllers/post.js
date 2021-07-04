@@ -3,13 +3,29 @@ import PostModel from "../models/post.js";
 import { processResponseData } from "../utils/processResponseData.js";
 
 
-export const getPosts = async (_, res) => { 
+export const getPosts = async (req, res) => { 
     try {
-        console.log(new Date(), 'Finding posts...');
+        const { title, tags, currentPage = 1, limit = 8 } = req.query;
+        
+        console.log(new Date(), `Finding posts, title is ${title || null}, tags is ${tags || null}, currentPage is ${currentPage}`);
+        
+        const titleRegex = new RegExp(title);
+        const startIndex = (currentPage - 1) * limit; 
 
-        const post = await PostModel.find();
-        const resData = processResponseData(200, post);
-        console.log(new Date(), 'Get posts successful. Find posts count:', post.length);
+        const queryCondition = {};
+        if (title) {
+            queryCondition['$and'] = [{ title: titleRegex }];
+        }
+        if (tags?.length > 0) {
+            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags }]) : [{ tags }];
+        }
+
+        console.log(new Date(), `queryCondition: ${JSON.stringify(queryCondition)}`);
+        
+        const total = await PostModel.countDocuments(queryCondition);
+        const post = await PostModel.find(queryCondition).sort({ createdTime: -1 }).skip(startIndex).limit(limit);
+        const resData = processResponseData(200, post, null, { currentPage, maxPage: Math.ceil(total / limit) });
+        console.log(new Date(), 'Get posts successful. Find posts count:', post.length, 'totalCount: ', total);
 
         res.status(200).json(resData);
     } catch (error) {
