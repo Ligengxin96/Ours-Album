@@ -61,7 +61,7 @@ const Post = ({ post, setEditingPostId }) => {
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
         </div>
-        <Typography className={classes.title} gutterBottom variant="h5" component="h2" title={post.title}>{compressionStr(post.title, 24)}</Typography>
+        <Typography className={classes.title} gutterBottom variant="h5" component="h2" title={post.title}>{compressionStr(post.title, 20)}</Typography>
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p" title={post.message}>{compressionStr(post.message, 90)}</Typography>
         </CardContent>
