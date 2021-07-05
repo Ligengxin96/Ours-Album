@@ -5,6 +5,7 @@ import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { GoogleLogin } from 'react-google-login';
 
+import useForm from '../../hooks/useForm';
 import { LOGIN } from '../../constants/constantsType';
 import { showError, showSuccess } from '../../utils/showMessage';
 import Input from './Input/Input';
@@ -31,11 +32,10 @@ const Authorize = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isTokenExpired, setisTokenExpired] = useState(!!error);
   const [errorText, setErrorText] = useState(null);
-  const [formValues, setFormValues] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
+
+  const [formValues, setFormValues] = useForm({ firstName: '', lastName: '', email: 'useThisAcountOrGoogleAcount@login', password: 'TomAndJerry', confirmPassword: '' });
 
   const handleShowPassword = () => setShowPassword(!showPassword);
-
-  const handleInputChange = (e) => setFormValues({ ...formValues, [e.target.name]: e.target.value });
 
   const switchMode = () => {
     setShowPassword(false);
@@ -62,7 +62,7 @@ const Authorize = (props) => {
     const password = encodeBase64(formValues.password);
     if (isRegister) {
       if (formValues.password !== formValues.confirmPassword) {
-        setErrorText('Inconsistent with password')
+        setErrorText(`Passwords doesn't match`);
         return;
       }
       dispatch(register({...formValues, password }, history));
@@ -89,14 +89,14 @@ const Authorize = (props) => {
             { 
               isRegister && (
                 <>
-                  <Input handleChange={handleInputChange} name='firstName' label='firstName' autoFocus half />
-                  <Input handleChange={handleInputChange} name='lastName' label='lastName' half />
+                  <Input handleChange={setFormValues} name='firstName' label='firstName' autoFocus half />
+                  <Input handleChange={setFormValues} name='lastName' label='lastName' half />
                 </> 
               )
             }
-            <Input handleChange={handleInputChange} name='email' label='email' type='email' />
-            <Input handleChange={handleInputChange} handleShowPassword={handleShowPassword} name='password' label='password' type={showPassword ? 'text' : 'password'} />
-            { isRegister && <Input handleChange={handleInputChange} name='confirmPassword' label='confirmPassword' type='password' errorText={errorText} /> }
+            <Input handleChange={setFormValues} value={formValues.email} name='email' label='email' type='email' />
+            <Input handleChange={setFormValues} value={formValues.password} handleShowPassword={handleShowPassword} name='password' label='password' type={showPassword ? 'text' : 'password'} />
+            { isRegister && <Input handleChange={setFormValues} name='confirmPassword' label='confirmPassword' type='password' errorText={errorText} /> }
           </Grid>
           <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>
             { isRegister ? 'Register' : 'Login' }
