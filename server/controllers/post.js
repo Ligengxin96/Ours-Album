@@ -36,6 +36,24 @@ export const getPosts = async (req, res) => {
     }
 }
 
+export const getPostById = async (req, res) => { 
+    try {
+        const { id } = req.params;
+        
+        console.log(new Date(), `Finding post by id, id is ${id}`);
+        
+        const post = await PostModel.find({ _id: id });
+        const resData = processResponseData(200, post);
+        console.log(new Date(), 'Get post successful. Find post count:', post.length);
+
+        res.status(200).json(resData);
+    } catch (error) {
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
+        console.error(new Date(), 'Error occrence when get post by id with error: ', error.message);
+        res.status(500).json(resData);
+    }
+}
+
 export const createPost = async (req, res) => {
     const post = req.body;
     const newPostMessage = new PostModel({ ...post, creatorId: req.userId, creator: req.username })

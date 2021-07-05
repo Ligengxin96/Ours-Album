@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory, withRouter, useParams } from 'react-router-dom';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { GoogleLogin } from 'react-google-login';
@@ -16,8 +16,8 @@ import { encodeBase64, decodeBase64 } from '../../utils/crypto.js';
 import useStyles from './styles';
 
 
-const Authorize = (props) => {
-  const { info } = props.match.params;
+const Authorize = () => {
+  const { info } = useParams();
   let error = null;
   if (info) {
     error = JSON.parse(decodeBase64(info)).error;

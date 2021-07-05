@@ -1,6 +1,6 @@
- import { START_LOADING, END_LOADING, FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/constantsType.js';
+ import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_ONE, CREATE, UPDATE, DELETE } from '../constants/constantsType.js';
  
- const initState = { posts: [], pagination: { currentPage: 1 }, isLoading: false };
+ const initState = { post: null, posts: [], pagination: { currentPage: 1 }, isLoading: false };
  
  const postsReducer = (state = initState, action) => {
   const { posts } = state;
@@ -10,6 +10,8 @@
       return { ...state, isLoading: true };
     case END_LOADING:
       return { ...state, isLoading: false };
+    case FETCH_ONE:
+        return { ...state, post: data[0] };
     case FETCH_ALL:
       return { ...state, posts: data, pagination };
     case CREATE:

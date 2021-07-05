@@ -52,4 +52,8 @@ export default makeStyles({
   likes: {
     paddingLeft: '3px',
   },
+  cardAction: {
+    display: 'block',
+    textAlign: 'initial',
+  },
 });
