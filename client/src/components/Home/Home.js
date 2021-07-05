@@ -67,13 +67,13 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
           <AppBar className={classes.appBarSearch} position="static" color="inherit">
-            <TextField onKeyDown={handleSearchClick} value={title} onChange={handleTitleChange} name="search" variant="outlined" label="title" fullWidth />
+            <TextField onKeyDown={handleSearchClick} value={title} onChange={handleTitleChange} name="search" variant="outlined" label="Title" fullWidth />
               <ChipInput
                 className={classes.chipInput}
                 value={tags}
                 onAdd={(tag) => handleAddTag(tag)}
                 onDelete={(tag) => handleRemoveTag(tag)}
-                label="tag"
+                label="Tag"
                 variant="outlined"
               />
             <Button className={classes.searchButton} variant="contained" color="primary" onClick={() => handleSearchClick({ keyCode: 13 })}>Search</Button>

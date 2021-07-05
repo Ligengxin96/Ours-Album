@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
-import DeleteConfirm  from '../../Common/ConfirmDialog/ConfirmDialog';
+import { DeleteConfirmDialog }  from '../../Common/ConfirmDialog/ConfirmDialog';
 import { deletePost, likePost } from '../../../actions/posts'
 import compressionStr from '../../../utils/compressionStr';
 
@@ -19,28 +19,15 @@ const Post = ({ post, setEditingPostId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [deleteId, setDeleteId] = useState(null);
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (confirmed) => {
-    if (confirmed === 1) {
-      dispatch(deletePost(deleteId));
-      setDeleteId(null);
-    }
-    setOpen(false);
-  };
-
   const editPost = (id) => {
     setEditingPostId(id);
   }
 
-  const deleteThisPost = (id) => {
-    setDeleteId(id);
-    handleClickOpen();
+  const deleteThisPost = async (id) => {
+    const result = await DeleteConfirmDialog();
+    if (result.isConfirmed) {
+      dispatch(deletePost(id));
+    }
   }
 
   const likeThisPost = (id) => {
@@ -70,7 +57,6 @@ const Post = ({ post, setEditingPostId }) => {
           {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
-       <DeleteConfirm isOpen={open} handleClose={handleClose} title='Confirm delete?' content='The post will be permanently lost and cannot be recovered!' />
     </div>
   )
 };

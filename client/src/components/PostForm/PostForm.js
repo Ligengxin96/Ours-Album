@@ -9,8 +9,8 @@ import { createPost, updatePost } from '../../actions/posts';
 import useStyles from './styles';
 
 const FIELDS_CONFIG = [
-  { name: 'title',label: 'title' },
-  { name: 'message', label: 'description', multiline: true, rows: 4 }
+  { name: 'title',label: 'Title' },
+  { name: 'message', label: 'Description', multiline: true, rows: 4 }
 ]
 
 const Form = ({ id, setEditingPostId }) => {
@@ -92,7 +92,7 @@ const Form = ({ id, setEditingPostId }) => {
           <div  className={classes.chipInput}>
             <ChipInput
               name="tags"
-              label="tag"
+              label="Tag"
               variant="outlined"
               fullWidth
               value={postData.tags}

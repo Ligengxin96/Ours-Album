@@ -1,0 +1,10 @@
+export const NONE = 'NONE';
+export const SERVER_UNKNOWN_ERROR = 'SERVER_UNKNOWN_ERROR';
+
+export const UNAUTH = 'UNAUTH';
+export const USER_EXIST = 'USER_EXIST';
+export const USER_NOT_EXIST = 'USER_NOT_EXIST';
+export const INCORRECT_USERNAME_OR_PASSWORD = 'INCORRECT_USERNAME_OR_PASSWORD';
+
+export const POST_EXIST = 'POST_EXIST';
+export const POST_NOT_EXIST = 'POST_NOT_EXIST';
