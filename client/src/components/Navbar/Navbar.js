@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppBar, Typography, Toolbar, Avatar, Button } from '@material-ui/core';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import decode from 'jwt-decode';
 
 import { encodeBase64 } from '../../utils/crypto';
@@ -11,7 +11,6 @@ import useStyles from './styles';
 
 const Navbar = () => {
   const classes = useStyles();
-  const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -22,9 +21,9 @@ const Navbar = () => {
     dispatch({ type: LOGOUT, payload: null });
     setUser(null);
     if (info) {
-      history.push(`/login/${info}`);
+      window.location = `/login/${info}`;
     } else {
-      history.push('/login');
+      window.location = `/login`;
     }
   }
 

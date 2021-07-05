@@ -44,15 +44,17 @@ const Authorize = (props) => {
   }
 
   const googleSuccess = async (res) => {
-    showSuccess('Google acount login Success');
     setisTokenExpired(false);
     dispatch({ type: LOGIN, payload: { ...res.profileObj, token: res.tokenId } });
     history.push('/');
+    showSuccess('Google acount login Success');
   };
 
   const googleError = (error) => {
-    showError('Google acount login failed');
-    console.error(`Google acount login failed with error: ${JSON.stringify(error)}`);
+    if (error.error !== 'popup_closed_by_user') {
+      showError('Google acount login failed');
+      console.error(`Google acount login failed with error: ${JSON.stringify(error)}`);
+    }
   };
 
   const handleSubmit = (e) => {
