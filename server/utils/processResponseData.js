@@ -1,16 +1,8 @@
-const SUCCESS_HTTP_CODE = [ 200, 201 ];
+import { NONE } from '../config/errorCode.js';
+import errorMessages from '../config/errorMessage.js';
+import SUCCESS_HTTP_CODE from '../config/successHttpCode.js';
 
-const errorMessages = {
-  200: 'Successful',
-  201: 'Successful',
-  400: 'Failed',
-  403: 'Access denied, please login',
-  404: 'Failed',
-  409: 'Failed',
-  500: 'Failed',
-}
-
-export const processResponseData = (httpCode, data = [], additionalMessage = '', pagination) => {
+export const processResponseData = (httpCode, data = [], errorCode = NONE, additionalMessage = '', pagination) => {
   let message = errorMessages[httpCode] || '';
   if (SUCCESS_HTTP_CODE.includes(httpCode)) {
       message = additionalMessage ? `${message}. ${additionalMessage}` : message
@@ -22,6 +14,7 @@ export const processResponseData = (httpCode, data = [], additionalMessage = '',
     return {
       isSuccess: SUCCESS_HTTP_CODE.includes(httpCode),
       data,
+      errorCode,
       message,
       pagination
     };
@@ -30,6 +23,7 @@ export const processResponseData = (httpCode, data = [], additionalMessage = '',
   return {
     isSuccess: SUCCESS_HTTP_CODE.includes(httpCode),
     data: [data],
+    errorCode,
     message,
     pagination
   };

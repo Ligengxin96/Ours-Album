@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import UserModal from "../models/user.js";
 import { hash } from '../utils/crypto.js';
 import { processResponseData } from "../utils/processResponseData.js";
+import { INCORRECT_USERNAME_OR_PASSWORD, NONE, SERVER_UNKNOWN_ERROR, USER_EXIST, USER_NOT_EXIST } from '../config/errorCode.js';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ export const login = async (req, res) => {
 
         if (!existUser) {
             console.log(new Date(), `${email} user dones't exist.`);
-            return res.status(404).json(processResponseData(404, [], `User dones't exist.`));
+            return res.status(404).json(processResponseData(404, [], USER_NOT_EXIST, `User dones't exist.`));
         }
 
         console.log(new Date(), `${existUser.email} is exist`);
@@ -31,14 +32,14 @@ export const login = async (req, res) => {
 
         if (!isPasswordMatched) {
             console.log(new Date(), `${existUser.email} passwrod check failed.`);
-            return res.status(400).json(processResponseData(400, [], `Username or password incorrect.`));
+            return res.status(400).json(processResponseData(400, [], INCORRECT_USERNAME_OR_PASSWORD,`Username or password incorrect.`));
         }
 
         const token = jwt.sign({ email: existUser.email, username: existUser.name, id: existUser._id }, secret, { expiresIn: '2h' });
         console.log(new Date(), `${existUser.email} login success`);
-        res.status(200).json({ userInfo: processUserInfo(existUser, token), isSuccess: true, message: 'Login success.' });
+        res.status(200).json({ userInfo: processUserInfo(existUser, token), errorCode: NONE, isSuccess: true, message: 'Login success.' });
     } catch (error) {
-        const resData = processResponseData(500, [], `Login failed, server error.`);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, `Login failed, server error.`);
         console.error(new Date(), 'Login failed with error: ', error.message);
         res.status(500).json(resData);
     }
@@ -53,7 +54,7 @@ export const register = async (req, res) => {
 
         if (existUser) {
             console.log(new Date(), `${email} user already exist.`);
-            return res.status(400).json(processResponseData(400, [], `User already exist.`));
+            return res.status(400).json(processResponseData(400, [], USER_EXIST, `User already exist.`));
         }
 
         const encodePassword = hash(password);
@@ -63,9 +64,9 @@ export const register = async (req, res) => {
         const createdUser = await UserModal.create({ firstName, lastName, email, name, password: encodePassword });
         const token = jwt.sign( { email: createdUser.email, username: createdUser.name, id: createdUser._id }, secret, { expiresIn: '2h' } );
         console.log(new Date(), `Create ${email} user success.`);
-        res.status(201).json({ userInfo: processUserInfo(createdUser, token), isSuccess: true, message: 'Login success.' });
+        res.status(201).json({ userInfo: processUserInfo(createdUser, token), errorCode: NONE, isSuccess: true, message: 'Login success.' });
     } catch (error) {
-        const resData = processResponseData(500, [], `Register failed, server error.`);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, `Register failed, server error.`);
         console.error(new Date(), 'Register failed with error: ', error.message);
         res.status(500).json(resData);
     }

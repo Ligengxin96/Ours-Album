@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { NONE, POST_NOT_EXIST, SERVER_UNKNOWN_ERROR, UNAUTH } from '../config/errorCode.js';
 import PostModel from "../models/post.js";
 import { processResponseData } from "../utils/processResponseData.js";
 
@@ -24,15 +25,14 @@ export const getPosts = async (req, res) => {
         
         const total = await PostModel.countDocuments(queryCondition);
         const post = await PostModel.find(queryCondition).sort({ createdTime: -1 }).skip(startIndex).limit(limit);
-        const resData = processResponseData(200, post, null, { currentPage, maxPage: Math.ceil(total / limit) });
+        const resData = processResponseData(200, post, NONE, null, { currentPage, maxPage: Math.ceil(total / limit) });
         console.log(new Date(), 'Get posts successful. Find posts count:', post.length, 'totalCount: ', total);
 
         res.status(200).json(resData);
     } catch (error) {
-        const resData = processResponseData(404, [], error.message);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
         console.error(new Date(), 'Error occrence when get posts with error: ', error.message);
-
-        res.status(404).json(resData);
+        res.status(500).json(resData);
     }
 }
 
@@ -43,7 +43,7 @@ export const createPost = async (req, res) => {
         console.log(new Date(), 'Creating post...');
 
         if (!req.userId) {
-            const resData = processResponseData(403, []);
+            const resData = processResponseData(403, [], UNAUTH);
             console.log(new Date(), 'Creating post faild, access denied.');
             return res.status(403).json(resData);
         }
@@ -53,9 +53,9 @@ export const createPost = async (req, res) => {
         console.log(new Date(), 'Create post successful. New post id:', savedPostMessage._id);
         res.status(201).json(resData);
     } catch (error) {
-        const resData = processResponseData(409, [], error.message);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
         console.error(new Date(), 'Error occrence when create posts with error: ', error.message);
-        res.status(409).json(resData);
+        res.status(500).json(resData);
     }
 }
 
@@ -64,7 +64,7 @@ export const updatePost = async (req, res) => {
         console.log(new Date(), 'Updating post...');
 
         if (!req.userId) {
-            const resData = processResponseData(403, []);
+            const resData = processResponseData(403, [], UNAUTH);
             console.log(new Date(), 'Updating post faild, access denied.');
             return res.status(403).json(resData);
         }
@@ -76,7 +76,7 @@ export const updatePost = async (req, res) => {
         const { creator, creatorId, title, message, tags, selectedFile = existPost.selectedFile } = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
+            const resData = processResponseData(404, [], POST_NOT_EXIST, `Can't find the post with id: ${id}, please refresh the page.`);
             console.log(`${new Date()}, Update post failed. Can't find the post with id: ${id}`);
             return res.status(404).send(resData);
         }
@@ -87,9 +87,9 @@ export const updatePost = async (req, res) => {
         console.log(new Date(), 'Update post successful. Updated post id:', updatedPost._id);
         res.status(200).json(resData);
     } catch (error) {
-        const resData = processResponseData(409, [], error.message);
+        const resData = processResponseData(500, [], error.message, SERVER_UNKNOWN_ERROR);
         console.error(new Date(), 'Error occrence when update posts with error: ', error.message);
-        res.status(404).json(resData);
+        res.status(500).json(resData);
     }
 }
 
@@ -100,7 +100,7 @@ export const likePost = async (req, res) => {
         const { userId } = req;
         
         if (!userId) {
-            const resData = processResponseData(403, []);
+            const resData = processResponseData(403, [], UNAUTH);
             console.log(new Date(), 'Likeing post faild, access denied.');
             return res.status(403).json(resData);
         }
@@ -108,7 +108,7 @@ export const likePost = async (req, res) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
+            const resData = processResponseData(404, [], POST_NOT_EXIST, `Can't find the post with id: ${id}, please refresh the page.`);
             console.log(`${new Date()}, Like post failed. Can't find the post with id: ${id}`);
             return res.status(404).send(resData);
         }
@@ -129,9 +129,9 @@ export const likePost = async (req, res) => {
         console.error(new Date(), 'Update post successful. Updated post id:', updatedPost._id);
         res.status(200).json(resData);
     } catch (error) {
-        const resData = processResponseData(409, [], error.message);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
         console.error(new Date(), 'Error occrence when like posts with error: ', error.message);
-        res.status(404).json(resData);
+        res.status(500).json(resData);
     }
 }
 
@@ -140,7 +140,7 @@ export const deletePost = async (req, res) => {
         console.log(new Date(), 'Deleting post...');
 
         if (!req.userId) {
-            const resData = processResponseData(403, []);
+            const resData = processResponseData(403, [], UNAUTH);
             console.log(new Date(), 'Deleting post faild, access denied.');
             return res.status(403).json(resData);
         }
@@ -148,7 +148,7 @@ export const deletePost = async (req, res) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            const resData = processResponseData(404, [], `Can't find the post with id: ${id}, please refresh the page.`);
+            const resData = processResponseData(404, [], POST_NOT_EXIST, `Can't find the post with id: ${id}, please refresh the page.`);
             console.log(`${new Date()}, Delete post failed. Can't find the post with id: ${id}`);
             return res.status(404).send(resData)
         }
@@ -158,8 +158,8 @@ export const deletePost = async (req, res) => {
         console.log(new Date(), 'Delete post successful. Delete post id:', deletedPost._id);
         res.status(200).json(resData);
     } catch (error) {
-        const resData = processResponseData(409, [], error.message);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR,error.message);
         console.error(new Date(), 'Error occrence when update posts with error: ', error.message);
-        res.status(404).json(resData);
+        res.status(500).json(resData);
     }
 }
