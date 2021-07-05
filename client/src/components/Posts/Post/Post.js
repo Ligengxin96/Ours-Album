@@ -70,7 +70,7 @@ const Post = ({ post, setEditingPostId }) => {
           {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
-       <DeleteConfirm isOpen={open} handleClose={handleClose} title='确定要删除吗？' content='删除后内容将永久丢失,无法恢复!' />
+       <DeleteConfirm isOpen={open} handleClose={handleClose} title='Confirm delete?' content='The post will be permanently lost and cannot be recovered!' />
     </div>
   )
 };

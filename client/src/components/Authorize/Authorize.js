@@ -49,7 +49,7 @@ const Authorize = (props) => {
   const googleSuccess = async (res) => {
     setOpen(true);
     setisGoogleLoginSuccess(true);
-    setAlertText('Google 账户登录成功');
+    setAlertText('Google acount login successfully');
     setTimeout(() => {
       try {
         setisTokenExpired(false);
@@ -65,7 +65,7 @@ const Authorize = (props) => {
     console.error(`Google acount login failed with error: ${JSON.stringify(error)}`);
     setOpen(true);
     setisGoogleLoginSuccess(false);
-    setAlertText('Google 账户登录失败,请稍后再试');
+    setAlertText('Google acount login failed, please try again later');
   };
 
   const handleClose = (_, reason) => {
@@ -80,7 +80,7 @@ const Authorize = (props) => {
     const password = encodeBase64(formValues.password);
     if (isRegister) {
       if (formValues.password !== formValues.confirmPassword) {
-        setErrorText('两次输入的密码不一致')
+        setErrorText('Inconsistent with password')
         return;
       }
       dispatch(register({...formValues, password }, history));
@@ -92,7 +92,7 @@ const Authorize = (props) => {
   useEffect(() => {
     if (isTokenExpired) {
       setOpen(true);
-      setAlertText('身份信息失效,请重新登录');
+      setAlertText('Certification expired, please login again');
     }
   }, [isTokenExpired])
 
@@ -102,29 +102,29 @@ const Authorize = (props) => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>{ isRegister ? '注册' : '登录' }</Typography>
+        <Typography component='h1' variant='h5'>{ isRegister ? 'Register' : 'Login' }</Typography>
         <form className={classes.form} onSubmit={handleSubmit} ref={fromRef} >
           <Grid container spacing={2}>
             { 
               isRegister && (
                 <>
-                  <Input handleChange={handleInputChange} name='firstName' label='姓氏' autoFocus half />
-                  <Input handleChange={handleInputChange} name='lastName' label='名字' half />
+                  <Input handleChange={handleInputChange} name='firstName' label='firstName' autoFocus half />
+                  <Input handleChange={handleInputChange} name='lastName' label='lastName' half />
                 </> 
               )
             }
-            <Input handleChange={handleInputChange} name='email' label='邮箱' type='email' />
-            <Input handleChange={handleInputChange} handleShowPassword={handleShowPassword} name='password' label='密码' type={showPassword ? 'text' : 'password'} />
-            { isRegister && <Input handleChange={handleInputChange} name='confirmPassword' label='确认密码' type='password' errorText={errorText} /> }
+            <Input handleChange={handleInputChange} name='email' label='email' type='email' />
+            <Input handleChange={handleInputChange} handleShowPassword={handleShowPassword} name='password' label='password' type={showPassword ? 'text' : 'password'} />
+            { isRegister && <Input handleChange={handleInputChange} name='confirmPassword' label='confirmPassword' type='password' errorText={errorText} /> }
           </Grid>
           <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>
-            { isRegister ? '注册' : '登录' }
+            { isRegister ? 'Register' : 'Login' }
           </Button>
           <GoogleLogin
             clientId='160069951274-9lk4icl4nvv4lbb61umon883c3rb6dtf.apps.googleusercontent.com'
             render={(renderProps) => (
               <Button onClick={renderProps.onClick} disabled={renderProps.disabled} className={classes.googleButton} fullWidth color='primary' startIcon={<GoogleIcon />} variant='contained'>
-                Google账号登录
+                Google Acount Login
               </Button>
             )}
             onSuccess={googleSuccess}
@@ -133,8 +133,8 @@ const Authorize = (props) => {
           />
           <Grid container justify='flex-end'>
             <Grid item>
-              <Button onClick={switchMode}>
-                { isRegister ? '已经有账号了?去登录' : '还没有账号?去注册' }
+              <Button style={{ textTransform: 'none' }} onClick={switchMode}>
+                { isRegister ? `Already have an account? Login` : `Don't have an account? Register` }
               </Button>
             </Grid>
           </Grid>

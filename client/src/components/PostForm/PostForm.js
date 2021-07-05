@@ -9,8 +9,8 @@ import { createPost, updatePost } from '../../actions/posts';
 import useStyles from './styles';
 
 const FIELDS_CONFIG = [
-  { name: 'title',label: '标题' },
-  { name: 'message', label: '描述', multiline: true, rows: 4 }
+  { name: 'title',label: 'title' },
+  { name: 'message', label: 'description', multiline: true, rows: 4 }
 ]
 
 const Form = ({ id, setEditingPostId }) => {
@@ -73,7 +73,7 @@ const Form = ({ id, setEditingPostId }) => {
     return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
-          {`请先登录才能创建或修改动态`}
+          Login for create or like a post
         </Typography>
       </Paper>
     );
@@ -82,7 +82,7 @@ const Form = ({ id, setEditingPostId }) => {
   return (
     <Paper className={classes.paper}>
       <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`} onSubmit={onSubmit} ref={formRef}>
-        <Typography variant='h6'>{ `${id ? '编辑': '创建'}我们的回忆` }</Typography>
+        <Typography variant='h6'>{ `${id ? 'Update': 'Create'} Post` }</Typography>
           {
             FIELDS_CONFIG.map((field) => {
               const { name, label, multiline = false, rows } = field;
@@ -92,7 +92,7 @@ const Form = ({ id, setEditingPostId }) => {
           <div  className={classes.chipInput}>
             <ChipInput
               name="tags"
-              label="标签"
+              label="tag"
               variant="outlined"
               fullWidth
               value={postData.tags}
@@ -103,8 +103,8 @@ const Form = ({ id, setEditingPostId }) => {
           <div className={classes.filedInput} >
             <FileBase onDone={uploadFile} /> 
           </div>
-        <Button className={classes.buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>提交</Button>
-        <Button variant='contained' color='secondary' size='small' fullWidth onClick={clear}>取消</Button>
+        <Button className={classes.buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>Submit</Button>
+        <Button variant='contained' color='secondary' size='small' fullWidth onClick={clear}>clear</Button>
       </form>
     </Paper>
   )

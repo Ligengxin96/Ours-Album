@@ -54,10 +54,10 @@ const Navbar = () => {
           <div className={classes.profile}>
             <Avatar className={classes.purple} alt={user.name} src={user.imageUrl}>{user.name.toUpperCase().charAt(0)}</Avatar>
             <Typography className={classes.userName} variant="h6">{user.name}</Typography>
-            <Button onClick={() => logout()} variant="contained" className={classes.logout} color="secondary">注销</Button>
+            <Button onClick={() => logout()} variant="contained" className={classes.logout} color="secondary">Logout</Button>
           </div>
           ) : (
-            <Button component={Link} to="/login" variant="contained" color="primary">登录</Button>
+            <Button component={Link} to="/login" variant="contained" color="primary">Login</Button>
           )
         }
       </Toolbar>

@@ -67,16 +67,16 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
           <AppBar className={classes.appBarSearch} position="static" color="inherit">
-            <TextField onKeyDown={handleSearchClick} value={title} onChange={handleTitleChange} name="search" variant="outlined" label="标题" fullWidth />
+            <TextField onKeyDown={handleSearchClick} value={title} onChange={handleTitleChange} name="search" variant="outlined" label="title" fullWidth />
               <ChipInput
                 className={classes.chipInput}
                 value={tags}
                 onAdd={(tag) => handleAddTag(tag)}
                 onDelete={(tag) => handleRemoveTag(tag)}
-                label="标签"
+                label="tag"
                 variant="outlined"
               />
-            <Button className={classes.searchButton} variant="contained" color="primary" onClick={() => handleSearchClick({ keyCode: 13 })}>查询</Button>
+            <Button className={classes.searchButton} variant="contained" color="primary" onClick={() => handleSearchClick({ keyCode: 13 })}>Search</Button>
           </AppBar>
           <Form id={editingPostId} setEditingPostId={setEditingPostId} />
           <Paper className={classes.pagination} elevation={6}>

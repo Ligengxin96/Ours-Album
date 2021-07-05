@@ -29,10 +29,10 @@ const ConfirmDialog = ({ isOpen = false, handleClose, title, content }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleClose(0)} color="primary">
-            取消
+            Cancel
           </Button>
           <Button onClick={() => handleClose(1)} color="secondary" autoFocus>
-            确定
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>
