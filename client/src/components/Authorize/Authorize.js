@@ -33,7 +33,7 @@ const Authorize = (props) => {
   const [isTokenExpired, setisTokenExpired] = useState(!!error);
   const [errorText, setErrorText] = useState(null);
 
-  const [formValues, setFormValues] = useForm({ firstName: '', lastName: '', email: 'useThisAcountOrGoogleAcount@login', password: 'TomAndJerry', confirmPassword: '' });
+  const [formValues, setFormValues] = useForm({ firstName: '', lastName: '', email: 'useThisAccountOrGoogleAccount@login', password: 'TomAndJerry', confirmPassword: '' });
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
@@ -47,13 +47,13 @@ const Authorize = (props) => {
     setisTokenExpired(false);
     dispatch({ type: LOGIN, payload: { ...res.profileObj, token: res.tokenId } });
     history.push('/');
-    showSuccess('Google acount login Success');
+    showSuccess('Google account login Success');
   };
 
   const googleError = (error) => {
     if (error.error !== 'popup_closed_by_user') {
-      showError('Google acount login failed');
-      console.error(`Google acount login failed with error: ${JSON.stringify(error)}`);
+      showError('Google account login failed');
+      console.error(`Google account login failed with error: ${JSON.stringify(error)}`);
     }
   };
 
@@ -105,7 +105,7 @@ const Authorize = (props) => {
             clientId='160069951274-9lk4icl4nvv4lbb61umon883c3rb6dtf.apps.googleusercontent.com'
             render={(renderProps) => (
               <Button onClick={renderProps.onClick} disabled={renderProps.disabled} className={classes.googleButton} fullWidth color='primary' startIcon={<GoogleIcon />} variant='contained'>
-                Google Acount Login
+                Google Account Login
               </Button>
             )}
             onSuccess={googleSuccess}
