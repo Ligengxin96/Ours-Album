@@ -7,7 +7,7 @@ import { GoogleLogin } from 'react-google-login';
 
 import useForm from '../../hooks/useForm';
 import { LOGIN } from '../../constants/constantsType';
-import { showError, showSuccess } from '../../utils/showMessage';
+import { showError, showSuccess } from '../Common/showMessage/showMessage';
 import Input from './Input/Input';
 import GoogleIcon from './GoogleIcon/GoogleIcon';
 import { login, register } from '../../actions/authorize';

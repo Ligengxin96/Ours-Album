@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import errorMap from '../config/errorMap';
+import errorMap from '../../../config/errorMap';
 
 
 const errorMessage = Swal.mixin({

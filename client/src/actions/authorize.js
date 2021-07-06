@@ -1,5 +1,5 @@
 import * as apis from '../apis';
-import { showError, showSuccess } from '../utils/showMessage';
+import { showError, showSuccess } from '../components/Common/showMessage/showMessage';
 
 import { LOGIN, REGISTER } from '../constants/constantsType.js';
 
