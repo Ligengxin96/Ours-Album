@@ -18,7 +18,7 @@ export const getPosts = async (req, res) => {
             queryCondition['$and'] = [{ title: titleRegex }];
         }
         if (tags?.length > 0) {
-            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags }]) : [{ tags }];
+            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags: { $in: tags.split(',') } }]) : [{ tags: { $in: tags.split(',') } }];
         }
 
         console.log(new Date(), `queryCondition: ${JSON.stringify(queryCondition)}`);

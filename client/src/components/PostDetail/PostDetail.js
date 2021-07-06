@@ -23,11 +23,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     if (post) {
-      if(post.tags.includes('EN-US')) {
-        dispatch(getPosts('', ['EN-US'], 1));
-      } else {
-        dispatch(getPosts('', ['ZH-CN'], 1));
-      }
+      dispatch(getPosts('', post.tags, 1));
     }
   }, [dispatch, post]);
 
