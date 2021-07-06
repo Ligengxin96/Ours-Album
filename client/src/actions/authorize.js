@@ -1,5 +1,5 @@
 import * as apis from '../apis';
-import { showError, showSuccess } from '../utils/showMessage';
+import { showError, showSuccess } from '../components/Common/showMessage/showMessage';
 
 import { LOGIN, REGISTER } from '../constants/constantsType.js';
 
@@ -11,7 +11,9 @@ export const login = (formValues, history) => async (dispatch) => {
     history.push('/');
     showSuccess(`Welcome ${data?.userInfo?.name}`);
   } catch (error) {
-    showError(error.response.data.errorCode);
+    if (error.response) {
+      showError(error.response.data.errorCode);
+    } 
     console.error(`Login failed with error: ${error.message}`);
   }
 };
@@ -23,7 +25,9 @@ export const register = (formValues, history) => async (dispatch) => {
     history.push('/');
     showSuccess(`Welcome ${data?.userInfo?.name}`);
   } catch (error) {
-    showError(error.response.data.errorCode);
+    if (error.response) {
+      showError(error.response.data.errorCode);
+    } 
     console.error(`Register failed with error: ${error.message}`);
   }
 };

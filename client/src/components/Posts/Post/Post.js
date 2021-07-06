@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
+import { useHistory } from 'react-router-dom';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core/';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -17,9 +18,11 @@ const Post = ({ post, setEditingPostId }) => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  const editPost = (id) => {
+  const editPost = (e, id) => {
+    e.stopPropagation();
     setEditingPostId(id);
   }
 
@@ -34,27 +37,34 @@ const Post = ({ post, setEditingPostId }) => {
     dispatch(likePost(id));
   }
 
+  const openPostDetail = () => {
+    history.push(`/posts/${post._id}`);
+  };
+
+
   return (
     <div>
       <Card className={classes.card}>
-        <CardMedia className={classes.media} title={post.title} image={post.selectedFile || nullImage} />
-        <div className={classes.overlayLeft}>
-          <Typography variant="h6">{post.creator}</Typography>
-          <Typography variant="body2">{moment(post.createdTime).fromNow()}</Typography>
-        </div>
-        <div className={classes.overlayRight}>
-          {(userInfo?.id && post.creatorId === userInfo?.id) && <Button style={{ color: 'white' }} size="small" onClick={() => editPost(post._id)} ><EditIcon fontSize="default" /></Button>}
-        </div>
-        <div className={classes.details}>
-          <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
-        </div>
-        <Typography className={classes.title} gutterBottom variant="h5" component="h2" title={post.title}>{compressionStr(post.title, 20)}</Typography>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p" title={post.message}>{compressionStr(post.message, 90)}</Typography>
-        </CardContent>
-        <CardActions className={classes.cardActions}>
-          <Button size="small" color="primary" disabled={userInfo?.id == null && userInfo?.googleId == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
-          {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
+        <ButtonBase component="span" className={classes.cardAction} onClick={openPostDetail}>
+          <CardMedia className={classes.media} title={post.title} image={post.selectedFile || nullImage} />
+          <div className={classes.overlayLeft}>
+            <Typography variant="h6">{post.creator}</Typography>
+            <Typography variant="body2">{moment(post.createdTime).fromNow()}</Typography>
+          </div>
+          <div className={classes.overlayRight}>
+            {(userInfo?.id && post.creatorId === userInfo?.id) && <Button style={{ color: 'white' }} size="small" onClick={(e) => editPost(e, post._id)} ><EditIcon fontSize="default" /></Button>}
+          </div>
+          <div className={classes.details}>
+            <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
+          </div>
+          <Typography className={classes.title} gutterBottom variant="h5" component="h2" title={post.title}>{compressionStr(post.title, 20)}</Typography>
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p" title={post.message}>{compressionStr(post.message, 90)}</Typography>
+          </CardContent>
+        </ButtonBase>
+          <CardActions className={classes.cardActions}>
+            <Button size="small" color="primary" disabled={userInfo?.id == null && userInfo?.googleId == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
+            {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
     </div>

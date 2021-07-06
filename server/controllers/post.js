@@ -18,7 +18,7 @@ export const getPosts = async (req, res) => {
             queryCondition['$and'] = [{ title: titleRegex }];
         }
         if (tags?.length > 0) {
-            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags }]) : [{ tags }];
+            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags: { $in: tags.split(',') } }]) : [{ tags: { $in: tags.split(',') } }];
         }
 
         console.log(new Date(), `queryCondition: ${JSON.stringify(queryCondition)}`);
@@ -32,6 +32,24 @@ export const getPosts = async (req, res) => {
     } catch (error) {
         const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
         console.error(new Date(), 'Error occrence when get posts with error: ', error.message);
+        res.status(500).json(resData);
+    }
+}
+
+export const getPostById = async (req, res) => { 
+    try {
+        const { id } = req.params;
+        
+        console.log(new Date(), `Finding post by id, id is ${id}`);
+        
+        const post = await PostModel.find({ _id: id });
+        const resData = processResponseData(200, post);
+        console.log(new Date(), 'Get post successful. Find post count:', post.length);
+
+        res.status(200).json(resData);
+    } catch (error) {
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
+        console.error(new Date(), 'Error occrence when get post by id with error: ', error.message);
         res.status(500).json(resData);
     }
 }
