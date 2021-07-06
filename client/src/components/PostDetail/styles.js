@@ -38,6 +38,11 @@ export default makeStyles((theme) => ({
       flexDirection: 'column',
     },
   },
+  recommendedPost: {
+    margin: '10px', 
+    width: '25%',
+    cursor: 'pointer',
+  },
   loadingPaper: {
     display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '15px', height: '39vh',
   },

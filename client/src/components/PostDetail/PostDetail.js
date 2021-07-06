@@ -4,6 +4,7 @@ import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core/
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
+import compressionStr from '../../utils/compressionStr';
 import { getPosts, getPostById } from '../../actions/posts';
 import nullImage from '../../images/null.png';
 import useStyles from './styles';
@@ -22,9 +23,13 @@ const PostDetail = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPosts('', posts.tags, 1));
+      if(post.tags.includes('EN-US')) {
+        dispatch(getPosts('', ['EN-US'], 1));
+      } else {
+        dispatch(getPosts('', ['ZH-CN'], 1));
+      }
     }
-  }, [dispatch, post, posts.tags]);
+  }, [dispatch, post]);
 
   if (!post){
     return null;
@@ -47,7 +52,7 @@ const PostDetail = () => {
       <div className={classes.card}>
         <div className={classes.section}>
           <Typography variant="h3" component="h2">{post.title}</Typography>
-          <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
+          <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag}`)}</Typography>
           <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
           <Typography variant="h6">Created by: {post.creator}</Typography>
           <Typography variant="body1">{moment(post.createdTime).fromNow()}</Typography>
@@ -63,14 +68,16 @@ const PostDetail = () => {
             <Divider />
             <div className={classes.recommendedPosts}>
               {
-                recommendedPosts.map(({ title, name, message, likes, selectedFile, _id }) => (
-                  <div key={_id} className={classes.divider} onClick={() => openPostDetail(_id)} >
-                    <Typography gutterBottom variant="h6">{title}</Typography>
-                    <Typography gutterBottom variant="subtitle2">{name}</Typography>
-                    <Typography gutterBottom variant="subtitle2">{message}</Typography>
-                    <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
-                    <img className={classes.img} src={selectedFile} />
-                  </div>
+                recommendedPosts.slice(0, 4).map(({ _id, title, name, message, likes, selectedFile }) => (
+                  selectedFile && (
+                    <div key={_id} className={classes.recommendedPost} onClick={() => openPostDetail(_id)} >
+                      <Typography gutterBottom variant="h6" title={title}>{compressionStr(title, 40)}</Typography>
+                      <Typography gutterBottom variant="subtitle2" title={name}>{name}</Typography>
+                      <Typography gutterBottom variant="subtitle2" title={message}>{compressionStr(message, 60)}</Typography>
+                      <Typography gutterBottom variant="subtitle1">{likes.length} people likes this post</Typography>
+                      <img className={classes.img} src={selectedFile} />
+                    </div>
+                  )
                 ))
               }
             </div>
