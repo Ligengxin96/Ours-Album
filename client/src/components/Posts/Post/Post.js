@@ -15,7 +15,7 @@ import nullImage from '../../../images/null.png';
 import useStyles from './styles';
 
 const Post = ({ post, setEditingPostId }) => {
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const user = JSON.parse(localStorage.getItem('userInfo'));
 
   const classes = useStyles();
   const history = useHistory();
@@ -52,7 +52,7 @@ const Post = ({ post, setEditingPostId }) => {
             <Typography variant="body2">{moment(post.createdTime).fromNow()}</Typography>
           </div>
           <div className={classes.overlayRight}>
-            {(userInfo?.id && post.creatorId === userInfo?.id) && <Button style={{ color: 'white' }} size="small" onClick={(e) => editPost(e, post._id)} ><EditIcon fontSize="default" /></Button>}
+            {(user?.id && post.creatorId === user?.id) && <Button style={{ color: 'white' }} size="small" onClick={(e) => editPost(e, post._id)} ><EditIcon fontSize="default" /></Button>}
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -63,8 +63,8 @@ const Post = ({ post, setEditingPostId }) => {
           </CardContent>
         </ButtonBase>
           <CardActions className={classes.cardActions}>
-            <Button size="small" color="primary" disabled={userInfo?.id == null && userInfo?.googleId == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
-            {(userInfo?.id && post.creatorId === userInfo?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
+            <Button size="small" color="primary" disabled={user?.name == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
+            {(user?.id && post.creatorId === user?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
     </div>
