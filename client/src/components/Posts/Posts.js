@@ -29,7 +29,6 @@ const Posts = ({ setEditingPostId }) => {
   return (
     <div>
       {
-        isLoading ? <CircularProgress /> :
         <Grid className={classes.container} container alignItems="stretch" spacing={3}>
           { 
             posts.map((post, index) => {
