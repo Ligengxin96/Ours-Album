@@ -176,8 +176,37 @@ export const deletePost = async (req, res) => {
         console.log(new Date(), 'Delete post successful. Delete post id:', deletedPost._id);
         res.status(200).json(resData);
     } catch (error) {
-        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR,error.message);
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
         console.error(new Date(), 'Error occrence when update posts with error: ', error.message);
+        res.status(500).json(resData);
+    }
+}
+
+export const commentPost = async (req, res) => {
+    try {
+        console.log(new Date(), 'Commenting post...');
+
+        if (!req.userId) {
+            const resData = processResponseData(403, [], UNAUTH);
+            console.log(new Date(), 'Commenting post faild, access denied.');
+            return res.status(403).json(resData);
+        }
+
+        const { id, comment } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            const resData = processResponseData(404, [], POST_NOT_EXIST, `Can't find the post with id: ${id}, please refresh the page.`);
+            console.log(`${new Date()}, Comment post failed. Can't find the post with id: ${id}`);
+            return res.status(404).send(resData)
+        }
+
+        const commentedPost = await PostModel.findByIdAndUpdate(id, { $push: { comments: [comment] } }, { new: true });
+        const resData = processResponseData(200, commentedPost);
+        console.log(new Date(), 'Comment post successful. Delete post id:', commentedPost._id);
+        res.status(200).json(resData);
+    } catch (error) {
+        const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
+        console.error(new Date(), 'Error occrence when Comment posts with error: ', error.message);
         res.status(500).json(resData);
     }
 }

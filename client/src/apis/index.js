@@ -43,6 +43,8 @@ export const likePost = (id) => API.patch(`${postPrefix}/likepost/${id}`);
 
 export const deletePost = (id) => API.delete(`${postPrefix}/${id}`);
 
+export const commentPost = (id, comment) => API.post(`${postPrefix}/comment`, { id, comment });
+
 export const login = (formValues) => API.post(`${userPrefix}/login`, formValues);
 
 export const register = (formValues) => API.post(`${userPrefix}/register`, formValues);
