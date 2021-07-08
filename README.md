@@ -2,9 +2,10 @@
 
 This is my first node.js full stack project.
 
-Using `react, redux, redux-thunk, express and MongoDB`
+Using `react, redux, redux-thunk, express and MongoDB`.
 
-The client folder is frontend project and the server folder is backend project
+In this project, you can see the beautifully image that fecth from Bing. After login (you can login with Google Acount)
+you can create, edit, and like the image post, you can also add your comment in the post detail page.
 
 ## How to start the project
 
@@ -12,9 +13,9 @@ The client folder is frontend project and the server folder is backend project
 2. In both clinet folder and server folder run: `yarn` or `npm install` to install dependencies
 3. In both clinet folder and server folder run: `yarn start` or `npm start` to start the server in localhost
 
-## `2021-06-20` To `2021-07-07` Ours-Album repo traffic data
+## `2021-06-20` To `2021-07-08` Ours-Album repo traffic data
 
-Total views data: `{ count: 388, uniques: 19 }`
+Total views data: `{ count: 389, uniques: 20 }`
 
 Total clones data: `{ count: 121, uniques: 73 }`
 
