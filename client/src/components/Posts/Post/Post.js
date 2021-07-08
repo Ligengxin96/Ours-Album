@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core/';
@@ -16,25 +16,33 @@ import useStyles from './styles';
 
 const Post = ({ post, setEditingPostId }) => {
   const user = JSON.parse(localStorage.getItem('userInfo'));
+  const userId = user?.googleId || user?.id;
 
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const editPost = (e, id) => {
+  const [likes, setLikes] = useState(post.likes);
+
+  const editPost = (e) => {
     e.stopPropagation();
-    setEditingPostId(id);
+    setEditingPostId(post._id);
   }
 
-  const deleteThisPost = async (id) => {
+  const deleteThisPost = async () => {
     const result = await DeleteConfirmDialog();
     if (result.isConfirmed) {
-      dispatch(deletePost(id));
+      dispatch(deletePost(post._id));
     }
   }
 
-  const likeThisPost = (id) => {
-    dispatch(likePost(id));
+  const likeThisPost = () => {
+    dispatch(likePost(post._id));
+    if (likes.includes(userId)) {
+      setLikes(likes.filter(id => userId !== id));
+    } else {
+      setLikes(likes.concat(userId));
+    }
   }
 
   const openPostDetail = () => {
@@ -52,7 +60,7 @@ const Post = ({ post, setEditingPostId }) => {
             <Typography variant="body2">{moment(post.createdTime).fromNow()}</Typography>
           </div>
           <div className={classes.overlayRight}>
-            {(user?.id && post.creatorId === user?.id) && <Button style={{ color: 'white' }} size="small" onClick={(e) => editPost(e, post._id)} ><EditIcon fontSize="default" /></Button>}
+            {(userId && post.creatorId === userId) && <Button style={{ color: 'white' }} size="small" onClick={editPost} ><EditIcon fontSize="default" /></Button>}
           </div>
           <div className={classes.details}>
             <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -63,8 +71,8 @@ const Post = ({ post, setEditingPostId }) => {
           </CardContent>
         </ButtonBase>
           <CardActions className={classes.cardActions}>
-            <Button size="small" color="primary" disabled={user?.name == null} onClick={() => likeThisPost(post._id)}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{post.likes.length}</span></Button>
-            {(user?.id && post.creatorId === user?.id) && <Button size="small" color="secondary" onClick={() => deleteThisPost(post._id)}><DeleteIcon fontSize="small" /></Button>}
+            <Button size="small" color="primary" disabled={userId == null} onClick={likeThisPost}><ThumbUpAltIcon fontSize="small" /><span className={classes.likes}>{likes.length}</span></Button>
+            {(userId && post.creatorId === userId) && <Button size="small" color="secondary" onClick={deleteThisPost}><DeleteIcon fontSize="small" /></Button>}
         </CardActions>
       </Card>
     </div>

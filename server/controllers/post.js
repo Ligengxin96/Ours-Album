@@ -24,7 +24,7 @@ export const getPosts = async (req, res) => {
         console.log(new Date(), `queryCondition: ${JSON.stringify(queryCondition)}`);
         
         const total = await PostModel.countDocuments(queryCondition);
-        const post = await PostModel.find(queryCondition).sort({ createdTime: -1 }).skip(startIndex).limit(limit);
+        const post = await PostModel.find(queryCondition).sort({ createdTime: 1 }).skip(startIndex).limit(limit);
         const resData = processResponseData(200, post, NONE, null, { currentPage, maxPage: Math.ceil(total / limit) });
         console.log(new Date(), 'Get posts successful. Find posts count:', post.length, 'totalCount: ', total);
 
