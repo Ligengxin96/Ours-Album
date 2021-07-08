@@ -1,11 +1,9 @@
 ## About Ours-Album
 
-This is my first node.js full stack project.
-
-Using `react, redux, redux-thunk, express and MongoDB`.
+This is my first node.js full stack project. Using `react, redux, redux-thunk, express and MongoDB`
 
 In this project, you can see the beautifully image that fecth from Bing. After login (you can login with Google Acount)
-you can create, edit, and like the image post, you can also add your comment in the post detail page.
+you can create, edit, and like the image post, you can also add your comment in the post detail page
 
 The client folder is frontend project and the server folder is backend project
 
