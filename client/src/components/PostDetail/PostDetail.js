@@ -4,6 +4,7 @@ import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core/
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
+import Comments from './Comments/Comments';
 import compressionStr from '../../utils/compressionStr';
 import { getPosts, getPostById } from '../../actions/posts';
 import nullImage from '../../images/null.png';
@@ -14,6 +15,8 @@ const PostDetail = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const user = JSON.parse(localStorage.getItem('userInfo'));
 
   const { post, posts, isLoading } = useSelector((state) => state.posts);
 
@@ -52,6 +55,9 @@ const PostDetail = () => {
           <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
           <Typography variant="h6">Created by: {post.creator}</Typography>
           <Typography variant="body1">{moment(post.createdTime).fromNow()}</Typography>
+          <Divider className={classes.divider} />
+          { user && <Comments user={user} post={post} /> }
+          <Divider className={classes.divider} />
         </div>
         <div className={classes.imageSection}>
           <img className={classes.media} src={post.selectedFile || nullImage} alt={post.title} />

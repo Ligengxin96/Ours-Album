@@ -27,7 +27,7 @@ export default makeStyles((theme) => ({
   },
   imageSection: {
     marginLeft: '20px',
-    width: "70%",
+    width: '60%',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
@@ -51,5 +51,16 @@ export default makeStyles((theme) => ({
   },
   img: {
     width: '200px'
+  },
+  commentsOuterContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+
+  },
+  commentsInnerContainer: {
+    height: '200px',
+    overflowY: 'auto',
+    marginRight: '30px',
+    width: '70%',
   },
 }));

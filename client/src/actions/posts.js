@@ -83,3 +83,16 @@ export const deletePost = (id) => async (dispatch) => {
     console.log('Error occurrence when delete post with error:', error.message);
   }
 }
+
+export const commentPost = (id, comment) => async (dispatch) => { 
+  try {
+    const { data } = await apis.commentPost(id, comment);
+    dispatch({ type: UPDATE, payload: data });
+    return data.data[0].comments;
+  } catch (error) {     
+    if (error.response) {
+      showError(error.response.data.errorCode);
+    } 
+    console.log('Error occurrence when Comment post with error:', error.message);
+  }
+}
