@@ -4,7 +4,7 @@ import { encodeBase64 } from '../utils/crypto';
 const postPrefix = '/v1/post';
 const userPrefix = '/v1/user';
 
-const baseURL = process.env.NODE_ENV === 'development' ? "http://localhost:5000" : "http://ours-album-server.herokuapp.com";
+const baseURL = process.env.NODE_ENV === 'development' ? "http://localhost:5000" : "http://23.224.182.82:5000";
 
 const API = axios.create({ baseURL });
 
