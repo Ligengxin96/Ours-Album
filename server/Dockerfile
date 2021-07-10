@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-ADD ./server ./
+ADD . ./
 
 RUN yarn 
 
