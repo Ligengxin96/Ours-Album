@@ -10,16 +10,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Deploy To Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Upload repo to own server and build server
+        uses: appleboy/ssh-action@master
+        env:
+          CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ours-album-server"
-          heroku_email: "ligengxin96@gmail.com"
-          appdir: server
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: CONNECTION_URL,JWT_SECRET
+          script: |
+            if [ ! -d "./server/Ours-Album" ]; then
+              cd  ./server
+              git clone https://github.com/Ligengxin96/Ours-Album.git
+              cd ./Ours-Album/server
+            else 
+              cd ./server/Ours-Album/server
+              git pull
+            fi
+            docker stop ours-album || true && docker container rm ours-album || true && docker image rm ours-album -f || true
+            docker build -t ours-album .
+            docker run -e CONNECTION_URL=$CONNECTION_URL -e JWT_SECRET=$JWT_SECRET -p 5000:5000 -d --name ours-album ours-album
+
 
