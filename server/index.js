@@ -24,7 +24,7 @@ app.use('/Ours-Album/v1/user', userRouter);
 
 mongoose.connect(databaseConnectStr, { 
   useNewUrlParser: true, 
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 }).then(() => {
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
