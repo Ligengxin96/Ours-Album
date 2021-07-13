@@ -4,7 +4,7 @@ import { encodeBase64 } from '../utils/crypto';
 const postPrefix = '/v1/post';
 const userPrefix = '/v1/user';
 
-const baseURL = 'https://ligengxin-server.top/Ours-Album';
+const baseURL = process.env.NODE_ENV === 'development' ?  'http://localhost:5000/Ours-Album' : 'https://ligengxin-server.top/Ours-Album';
 
 const API = axios.create({ baseURL });
 
