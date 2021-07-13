@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.UPDATE_README_PAT }}
         with:
           showTrafficData: true
-          apiPath: https://getrepootrafficdata.herokuapp.com/v1/getrepoinfo
+          apiPath: https://www.ligengxin-server.top/getrepoinfo/v1/getrepoinfo
           header: About Ours-Album
           subhead: |
                   This is my first node.js full stack project. Using `react, redux, redux-thunk, express and MongoDB`
