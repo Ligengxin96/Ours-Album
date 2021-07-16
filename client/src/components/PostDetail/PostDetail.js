@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
 import Comments from './Comments/Comments';
+import shuffle from '../../utils/shuffle';
 import compressionStr from '../../utils/compressionStr';
 import { getPosts, getPostById } from '../../actions/posts';
 import nullImage from '../../images/null.png';
@@ -70,7 +71,7 @@ const PostDetail = () => {
             <Divider />
             <div className={classes.recommendedPosts}>
               {
-                recommendedPosts.slice(0, 4).map(({ _id, title, name, message, likes, selectedFile }) => (
+                shuffle(recommendedPosts).slice(0, 4).map(({ _id, title, name, message, likes, selectedFile }) => (
                   selectedFile && (
                     <div key={_id} className={classes.recommendedPost} onClick={() => openPostDetail(_id)} >
                       <Typography gutterBottom variant="h6" title={title}>{compressionStr(title, 40)}</Typography>
