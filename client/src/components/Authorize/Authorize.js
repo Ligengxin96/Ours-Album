@@ -61,11 +61,12 @@ const Authorize = () => {
     e.preventDefault();
     const password = encodeBase64(formValues.password);
     if (isRegister) {
-      if (formValues.password !== formValues.confirmPassword) {
+      const confirmPassword = encodeBase64(formValues.confirmPassword);
+      if (password !== confirmPassword) {
         setErrorText(`Passwords doesn't match`);
         return;
       }
-      dispatch(register({...formValues, password }, history));
+      dispatch(register({...formValues, password, confirmPassword }, history));
     } else {
       dispatch(login({...formValues, password }, history));
     }
