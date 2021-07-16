@@ -32,6 +32,6 @@ jobs:
             fi
             docker stop ours-album || true && docker container rm ours-album || true && docker image rm ours-album -f || true
             docker build -t ours-album .
-            docker run -e CONNECTION_URL=$CONNECTION_URL -e JWT_SECRET=$JWT_SECRET -p 5000:5000 -d --name ours-album ours-album
+            docker run -e CONNECTION_URL=$CONNECTION_URL -e JWT_SECRET=$JWT_SECRET -p 5000:5000 --restart=always -d --name ours-album ours-album
 
 
