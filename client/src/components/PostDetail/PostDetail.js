@@ -56,9 +56,14 @@ const PostDetail = () => {
           <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
           <Typography variant="h6">Created by: {post.creator}</Typography>
           <Typography variant="body1">{moment(post.createdTime).fromNow()}</Typography>
-          <Divider className={classes.divider} />
-          { user && <Comments user={user} post={post} /> }
-          <Divider className={classes.divider} />
+          { 
+            user &&
+            <>
+              <Divider className={classes.divider} />
+              <Comments user={user} post={post} /> 
+              <Divider className={classes.divider} /> 
+            </>
+          }
         </div>
         <div className={classes.imageSection}>
           <img className={classes.media} src={post.selectedFile || nullImage} alt={post.title} />
