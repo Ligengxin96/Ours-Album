@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: UpdateReadmeAction-Private
-        uses: Ligengxin96/UpdateReadmeAction-Private@v1.0-privatepreview
+        uses: Ligengxin96/UpdateReadmeAction-Private@v1.0-publicpreview
         env:
           GITHUB_TOKEN: ${{ secrets.UPDATE_README_PAT }}
         with:
