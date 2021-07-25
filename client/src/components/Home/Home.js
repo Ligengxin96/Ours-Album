@@ -70,7 +70,7 @@ const Home = () => {
           <Grid item xs={12} sm={6} md={3}>
           <AppBar className={classes.appBarSearch} position="static" color="inherit">
             <TextField className={classes.search} onKeyDown={handleSearchClick} value={title} onChange={handleTextValueChange} name="title" variant="outlined" label="Title" fullWidth />
-            <TextField className={classes.search} onKeyDown={handleSearchClick} value={message} onChange={handleTextValueChange} name="message" variant="outlined" label="Message" fullWidth />
+            <TextField className={classes.search} onKeyDown={handleSearchClick} value={message} onChange={handleTextValueChange} name="message" variant="outlined" label="Description" fullWidth />
               <ChipInput
                 className={classes.search}
                 value={tags}
