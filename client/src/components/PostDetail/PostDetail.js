@@ -27,7 +27,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPosts('', post.tags, 1));
+      dispatch(getPosts('', '', post.tags, 1));
     }
   }, [dispatch, post]);
 
