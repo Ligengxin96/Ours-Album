@@ -6,16 +6,20 @@ import { processResponseData } from "../utils/processResponseData.js";
 
 export const getPosts = async (req, res) => { 
     try {
-        const { title, tags, currentPage = 1, limit = 8 } = req.query;
+        const { title, tags, message, currentPage = 1, limit = 8 } = req.query;
         
-        console.log(new Date(), `Finding posts, title is ${title || null}, tags is ${tags || null}, currentPage is ${currentPage}`);
+        console.log(new Date(), `Finding posts, title is ${`'${title}'` || null}, message is ${`'${message}'` || null}, tags is ${`'${tags}'` || null}, currentPage is ${currentPage}`);
         
         const titleRegex = new RegExp(title);
+        const messageRegex = new RegExp(message);
         const startIndex = (currentPage - 1) * limit; 
 
         const queryCondition = {};
         if (title) {
             queryCondition['$and'] = [{ title: titleRegex }];
+        }
+        if (message) {
+            queryCondition['$and'] = queryCondition['$and'] ? [...queryCondition['$and'], { message: messageRegex }] : [{ message: messageRegex }];
         }
         if (tags?.length > 0) {
             queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags: { $in: tags.split(',') } }]) : [{ tags: { $in: tags.split(',') } }];

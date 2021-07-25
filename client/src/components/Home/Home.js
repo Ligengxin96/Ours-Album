@@ -26,11 +26,13 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(Number(query.get('currentPage')) || 1);
 
   const [editingPostId, setEditingPostId] = useState(null);
-  const [title, setTitle] = useState('');
+  const [textValue, setTextValue] = useState({ title: '', message: '' });
   const [tags, setTags] = useState([]);
 
-  const handleTitleChange = e => {
-    setTitle(e.target.value);
+  const { title = '', message = ''} = textValue;
+
+  const handleTextValueChange = e => {
+    setTextValue({ ...textValue, [`${e.target.name}`]: e.target.value });
   }
 
   const handleAddTag = (tag) => {
@@ -43,8 +45,8 @@ const Home = () => {
 
   const handleSearchClick = (e) => {
     if (e.keyCode === 13) {
-      if (title.trim() || tags.length > 0) {
-        history.push(`/posts?title=${title}&tags=${tags.join(',')}&currentPage=${1}`);
+      if (title.trim() || message.trim() || tags.length > 0) {
+        history.push(`/posts?title=${title}&title=${message}&tags=${tags.join(',')}&currentPage=${1}`);
         setCurrentPage(1);
         setClickSearch(!clickSearch); // trigger fetch post
       } else {
@@ -54,7 +56,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(getPosts(title, tags, currentPage));
+    dispatch(getPosts(title, message, tags, currentPage));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clickSearch, currentPage])
 
@@ -67,9 +69,10 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
           <AppBar className={classes.appBarSearch} position="static" color="inherit">
-            <TextField onKeyDown={handleSearchClick} value={title} onChange={handleTitleChange} name="search" variant="outlined" label="Title" fullWidth />
+            <TextField className={classes.search} onKeyDown={handleSearchClick} value={title} onChange={handleTextValueChange} name="title" variant="outlined" label="Title" fullWidth />
+            <TextField className={classes.search} onKeyDown={handleSearchClick} value={message} onChange={handleTextValueChange} name="message" variant="outlined" label="Message" fullWidth />
               <ChipInput
-                className={classes.chipInput}
+                className={classes.search}
                 value={tags}
                 onAdd={(tag) => handleAddTag(tag)}
                 onDelete={(tag) => handleRemoveTag(tag)}

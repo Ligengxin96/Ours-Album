@@ -3,10 +3,10 @@ import { showError, showSuccess } from '../components/Common/showMessage/showMes
 
 import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_ONE, CREATE, UPDATE, DELETE } from '../constants/constantsType.js';
 
-export const getPosts = (title, tags, currentPage) => async (dispatch) => {
+export const getPosts = (title, message, tags, currentPage) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const { data } = await apis.fetchPosts(title, tags, currentPage);
+    const { data } = await apis.fetchPosts(title, message, tags, currentPage);
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) { 
     if (error.response) {

@@ -12,8 +12,8 @@ export default makeStyles((theme) => ({
     marginTop: '1rem',
     padding: '16px',
   },
-  chipInput: {
-    margin: '10px 0',
+  search: {
+    marginBottom: '10px',
   },
   gridContainer: {
     [theme.breakpoints.down('xs')]: {
