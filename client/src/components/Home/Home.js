@@ -46,7 +46,7 @@ const Home = () => {
   const handleSearchClick = (e) => {
     if (e.keyCode === 13) {
       if (title.trim() || message.trim() || tags.length > 0) {
-        history.push(`/posts?title=${title}&title=${message}&tags=${tags.join(',')}&currentPage=${1}`);
+        history.push(`/posts?title=${title}&message=${message}&tags=${tags.join(',')}&currentPage=${1}`);
         setCurrentPage(1);
         setClickSearch(!clickSearch); // trigger fetch post
       } else {
