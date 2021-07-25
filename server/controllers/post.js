@@ -10,8 +10,8 @@ export const getPosts = async (req, res) => {
         
         console.log(new Date(), `Finding posts, title is ${`'${title}'` || null}, message is ${`'${message}'` || null}, tags is ${`'${tags}'` || null}, currentPage is ${currentPage}`);
         
-        const titleRegex = new RegExp(title);
-        const messageRegex = new RegExp(message);
+        const titleRegex = new RegExp(title.replace('(', '\\(').replace(')', '\\)'), 'i');
+        const messageRegex = new RegExp(message.replace('(', '\\(').replace(')', '\\)'), 'i');
         const startIndex = (currentPage - 1) * limit; 
 
         const queryCondition = {};
