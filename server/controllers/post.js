@@ -6,9 +6,9 @@ import { processResponseData } from "../utils/processResponseData.js";
 
 export const getPosts = async (req, res) => { 
     try {
-        const { title, tags, message, currentPage = 1, limit = 8 } = req.query;
+        const { title = '', message = '', tags = [], currentPage = 1, limit = 8 } = req.query;
         
-        console.log(new Date(), `Finding posts, title is ${`'${title}'` || null}, message is ${`'${message}'` || null}, tags is ${`'${tags}'` || null}, currentPage is ${currentPage}`);
+        console.log(new Date(), `Finding posts, title is '${title}', message is '${message}', tags is '${tags}', currentPage is ${currentPage}`);
         
         const titleRegex = new RegExp(title.replace('(', '\\(').replace(')', '\\)'), 'i');
         const messageRegex = new RegExp(message.replace('(', '\\(').replace(')', '\\)'), 'i');
