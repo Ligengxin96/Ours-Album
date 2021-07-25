@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { encodeBase64 } from '../utils/crypto';
 
-const postPrefix = '/v1/post';
-const userPrefix = '/v1/user';
+const postPrefix = '/Ours-Album/v1/post';
+const userPrefix = '/Ours-Album/v1/user';
 
-const baseURL = process.env.NODE_ENV === 'development' ?  'http://localhost:5000/Ours-Album' : 'https://ligengxin-server.top/Ours-Album';
+const baseURL = process.env.NODE_ENV === 'development' ?  'http://localhost:5000' : 'https://ligengxin-server.top';
 
 const API = axios.create({ baseURL });
 
