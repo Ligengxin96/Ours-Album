@@ -29,7 +29,7 @@ const PostDetail = () => {
     if (post) {
       dispatch(getPosts('', '', post.tags, Math.floor(Math.random() * pagination.maxPage)));
     }
-  }, [dispatch, post, pagination]);
+  }, [dispatch, post, pagination.maxPage]);
 
   if (!post){
     return null;
