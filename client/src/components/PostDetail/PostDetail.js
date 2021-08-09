@@ -19,7 +19,7 @@ const PostDetail = () => {
 
   const user = JSON.parse(localStorage.getItem('userInfo'));
 
-  const { post, posts, isLoading } = useSelector((state) => state.posts);
+  const { post, posts, isLoading, pagination } = useSelector((state) => state.posts);
 
   useEffect(() => {
     dispatch(getPostById(id));
@@ -27,7 +27,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPosts('', '', post.tags, 1));
+      dispatch(getPosts('', '', post.tags, Math.floor(Math.random() * pagination.maxPage)));
     }
   }, [dispatch, post]);
 
