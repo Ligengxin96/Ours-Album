@@ -27,7 +27,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPosts('', '', post.tags, Math.floor(Math.random() * pagination.maxPage)));
+      dispatch(getPosts('', '', post.tags, Math.floor(Math.random() * pagination.maxPage) + 1));
     }
   }, [dispatch, post, pagination.maxPage]);
 
