@@ -1287,10 +1287,10 @@ sparse-bitfield@^3.0.3:
   dependencies:
     memory-pager "^1.0.2"
 
-sql-in-mongo@^1.0.2-privatepreview:
-  version "1.0.2-privatepreview"
-  resolved "https://registry.npmjs.org/sql-in-mongo/-/sql-in-mongo-1.0.2-privatepreview.tgz#2202ff9438caf5b0bfb601e04bf257162c9a2a61"
-  integrity sha512-4vGWLeFlaqnw6+yvltPWH1PYC0xHCcpmUXn4OziclJxNjxrcsatBwHwMEH7qWWrYbyuotXpiZxQpx44IGScY5Q==
+sql-in-mongodb@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/sql-in-mongodb/-/sql-in-mongodb-1.0.0.tgz#2cac50e838640a01a66dca6adfea1f1e3ac75f95"
+  integrity sha512-tk2Xp3UQd59g3QW+XYM3Gv/ow3XqBbPdifX0BwUTB1f5jpvE1P1nBlOx3SOKsuRNKNUW3RrSpON0hTLkfwzqIQ==
   dependencies:
     mongoose "^5.13.4"
     node-sql-parser "^3.6.1"

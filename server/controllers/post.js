@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { SQLParser } from 'sql-in-mongo';
+import { SQLParser } from 'sql-in-mongodb';
 import { NONE, POST_NOT_EXIST, SERVER_UNKNOWN_ERROR, UNAUTH } from '../config/errorCode.js';
 import PostModel from "../models/post.js";
 import { processResponseData } from "../utils/processResponseData.js";
