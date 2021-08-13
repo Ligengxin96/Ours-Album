@@ -11,7 +11,7 @@
     case END_LOADING:
       return { ...state, isLoading: false };
     case FETCH_ONE:
-        return { ...state, post: data[0] };
+        return { ...state, post: data[0], pagination };
     case FETCH_ALL:
       return { ...state, posts: data, pagination };
     case CREATE:

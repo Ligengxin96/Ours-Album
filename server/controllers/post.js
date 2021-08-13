@@ -50,7 +50,8 @@ export const getPostById = async (req, res) => {
         console.log(new Date(), `Finding post by id, id is ${id}`);
         
         const post = await PostModel.find({ _id: id });
-        const resData = processResponseData(200, post);
+        const total = await PostModel.countDocuments();
+        const resData = processResponseData(200, post, NONE, null, { currentPage: 1, maxPage: Math.ceil(total / 8) });
         console.log(new Date(), 'Get post successful. Find post count:', post.length);
 
         res.status(200).json(resData);
