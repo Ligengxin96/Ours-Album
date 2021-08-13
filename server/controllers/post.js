@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { SQLParser } from 'sql-in-mongo';
 import { NONE, POST_NOT_EXIST, SERVER_UNKNOWN_ERROR, UNAUTH } from '../config/errorCode.js';
 import PostModel from "../models/post.js";
 import { processResponseData } from "../utils/processResponseData.js";
@@ -9,21 +10,23 @@ export const getPosts = async (req, res) => {
         const { title = '', message = '', tags = [], currentPage = 1, limit = 8 } = req.query;
         
         console.log(new Date(), `Finding posts, title is '${title}', message is '${message}', tags is '${tags}', currentPage is ${currentPage}`);
-        
-        const titleRegex = new RegExp(title.replace('(', '\\(').replace(')', '\\)'), 'i');
-        const messageRegex = new RegExp(message.replace('(', '\\(').replace(')', '\\)'), 'i');
-        const startIndex = (currentPage - 1) * limit; 
 
-        const queryCondition = {};
+        const startIndex = (currentPage - 1) * limit; 
+        const parser = new SQLParser();
+        let sqlQuery = ''
+
         if (title) {
-            queryCondition['$and'] = [{ title: titleRegex }];
+            sqlQuery = `where title like '%${title}%'`;
         }
         if (message) {
-            queryCondition['$and'] = queryCondition['$and'] ? [...queryCondition['$and'], { message: messageRegex }] : [{ message: messageRegex }];
+            sqlQuery = sqlQuery ? `${sqlQuery} and message like '%${message}%'` : `where message like '%${message}%'`;
         }
         if (tags?.length > 0) {
-            queryCondition['$and'] = queryCondition['$and'] ? queryCondition['$and'].concat([{ tags: { $in: tags.split(',') } }]) : [{ tags: { $in: tags.split(',') } }];
+            const tag = tags.split(',').map(tag => `'${tag}'`).join(',');
+            sqlQuery = sqlQuery ? `${sqlQuery} and tags in (${tag})` : `where tags in (${tag})`;
         }
+
+        const queryCondition = parser.parseSql(sqlQuery);
 
         console.log(new Date(), `queryCondition: ${JSON.stringify(queryCondition)}`);
         

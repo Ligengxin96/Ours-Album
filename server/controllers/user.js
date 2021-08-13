@@ -26,7 +26,7 @@ export const login = async (req, res) => {
             return res.status(404).json(processResponseData(404, [], USER_NOT_EXIST, `User dones't exist.`));
         }
 
-        console.log(new Date(), `${existUser.email} is exist`);
+        console.log(new Date(), `${existUser.email} is exist, check password.`);
 
         const isPasswordMatched = hash(password) === existUser.password;
 
