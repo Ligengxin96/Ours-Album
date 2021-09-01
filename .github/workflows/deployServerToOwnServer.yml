@@ -17,6 +17,8 @@ jobs:
         env:
           CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
