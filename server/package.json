@@ -20,6 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.14",
     "nodemon": "^2.0.7",
+    "redis": "^3.1.2",
     "sql-in-mongodb": "^1.0.0"
   }
 }
