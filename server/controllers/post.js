@@ -12,13 +12,13 @@ dotenv.config();
 const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASSWORD,
-		port: 6379,
+    port: 6379,
     retry_strategy: () => 1000,
-		connect_timeout: 10000
+    connect_timeout: 10000
 });
 
 redisClient.on('error', (error) => {
-	console.log(new Date(), `Redis error: ${error.message}`);
+  console.log(new Date(), `Redis error: ${error.message}`);
 })
 
 redisClient.get = util.promisify(redisClient.get);
@@ -31,9 +31,9 @@ export const getPosts = async (req, res) => {
 
         const key = `${title}-${message}-${tags}-${currentPage}`;
         const cacheValue = await redisClient.get(key);
-					if (cacheValue) {
-					console.log(new Date(), `Get Response from Redis, key: ${key}`);
-					return res.status(200).json(JSON.parse(cacheValue));
+          if (cacheValue) {
+          console.log(new Date(), `Get Response from Redis, key: ${key}`);
+          return res.status(200).json(JSON.parse(cacheValue));
         }
 
         const startIndex = (currentPage - 1) * limit; 
@@ -61,7 +61,7 @@ export const getPosts = async (req, res) => {
 
         console.log(new Date(), `Set cache to redis, key: ${key}`);
         redisClient.set(key, JSON.stringify(resData));
-				redisClient.expire(key, 3600);
+        redisClient.expire(key, 3600);
 
         console.log(new Date(), 'Get posts successful. Find posts count:', post.length, 'totalCount: ', total);
 
@@ -80,18 +80,18 @@ export const getPostById = async (req, res) => {
         console.log(new Date(), `Finding post by id, id is ${id}`);
 
         const cacheValue = await redisClient.get(id);
-					if (cacheValue) {
-					console.log(new Date(), `Get Response from Redis, key: ${id}`);
-					return res.status(200).json(JSON.parse(cacheValue));
+          if (cacheValue) {
+          console.log(new Date(), `Get Response from Redis, key: ${id}`);
+          return res.status(200).json(JSON.parse(cacheValue));
         }
         
         const post = await PostModel.find({ _id: id });
         const total = await PostModel.countDocuments();
         const resData = processResponseData(200, post, NONE, null, { currentPage: 1, maxPage: Math.ceil(total / 8) });
 
-				console.log(new Date(), `Set cache to redis, key: ${id}`);
+        console.log(new Date(), `Set cache to redis, key: ${id}`);
         redisClient.set(id, JSON.stringify(resData));
-				redisClient.expire(id, 3600);
+        redisClient.expire(id, 3600);
 
         console.log(new Date(), 'Get post successful. Find post count:', post.length);
 
