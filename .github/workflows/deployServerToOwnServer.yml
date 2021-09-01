@@ -33,8 +33,8 @@ jobs:
             fi
             docker stop ours-album || true && docker container rm ours-album || true && docker image rm ours-album -f || true
             docker build -t ours-album .
-            docker run \ 
-            -e CONNECTION_URL=$CONNECTION_URL \ 
+            docker run \
+            -e CONNECTION_URL=$CONNECTION_URL \
             -e JWT_SECRET=$JWT_SECRET \
             -e REDIS_HOST=$REDIS_HOST \
             -e REDIS_PASSWORD=$REDIS_PASSWORD \
