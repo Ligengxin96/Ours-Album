@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: CONNECTION_URL,JWT_SECRET
+          envs: CONNECTION_URL,JWT_SECRET,REDIS_HOST,REDIS_PASSWORD
           script: |
             if [ ! -d "./server/Ours-Album" ]; then
               cd  ./server
@@ -33,4 +33,10 @@ jobs:
             fi
             docker stop ours-album || true && docker container rm ours-album || true && docker image rm ours-album -f || true
             docker build -t ours-album .
-            docker run -e CONNECTION_URL=$CONNECTION_URL -e JWT_SECRET=$JWT_SECRET -p 5000:5000 --net userDefined --ip 172.20.0.5 --restart=always -d --name ours-album ours-album
+            docker run \ 
+            -e CONNECTION_URL=$CONNECTION_URL \ 
+            -e JWT_SECRET=$JWT_SECRET \
+            -e REDIS_HOST=$REDIS_HOST \
+            -e REDIS_PASSWORD=$REDIS_PASSWORD \
+            -p 5000:5000 --net userDefined --ip 172.20.0.5 \
+            --restart=always -d --name ours-album ours-album
