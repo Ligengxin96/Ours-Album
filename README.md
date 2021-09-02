@@ -1,6 +1,6 @@
 ## About Ours-Album
 
-This is my first node.js full stack project. Using `react, redux, redux-thunk, express and MongoDB`
+This is my first node.js full stack project. Using `react, redux, redux-thunk, express, redis and MongoDB`
 
 In this project, you can see the beautifully image that fecth from Bing. After login (you can login with Google Acount)
 you can create, edit, and like the image post, you can also add your comment in the post detail page
@@ -13,11 +13,11 @@ The client folder is frontend project and the server folder is backend project
 2. In both clinet folder and server folder run: `yarn` or `npm install` to install dependencies
 3. In both clinet folder and server folder run: `yarn start` or `npm start` to start the server in localhost
 
-## `2021-06-20` To `2021-08-31` Ours-Album repo traffic data
+## `2021-06-20` To `2021-09-01` Ours-Album repo traffic data
 
-Total views data: `{ count: 832, uniques: 56 }`
+Total views data: `{ count: 845, uniques: 57 }`
 
-Total clones data: `{ count: 270, uniques: 206 }`
+Total clones data: `{ count: 274, uniques: 209 }`
 
 
 
