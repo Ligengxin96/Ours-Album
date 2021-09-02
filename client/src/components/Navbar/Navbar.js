@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppBar, Typography, Toolbar, Avatar, Button } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
-import decode from 'jwt-decode';
 
-import { encodeBase64 } from '../../utils/crypto';
 import { LOGOUT } from '../../constants/constantsType';
 import usImgPath from '../../images/us.png';
 import useStyles from './styles';
@@ -28,15 +26,6 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    const token = user?.token;
-    
-    if (token) {
-      const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()){
-        const info = encodeBase64(JSON.stringify({ error: 403 }));
-        logout(info);
-      };
-    }
     setUser(initUserState);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

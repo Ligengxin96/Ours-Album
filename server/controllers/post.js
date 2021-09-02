@@ -22,6 +22,8 @@ redisClient.on('error', (error) => {
 })
 
 redisClient.get = util.promisify(redisClient.get);
+redisClient.set = util.promisify(redisClient.set);
+redisClient.expire = util.promisify(redisClient.expire);
 
 export const getPosts = async (req, res) => { 
     try {
@@ -33,6 +35,7 @@ export const getPosts = async (req, res) => {
         const cacheValue = await redisClient.get(key);
           if (cacheValue) {
           console.log(new Date(), `Get Response from Redis, key: ${key}`);
+          await redisClient.expire(key, 3600);
           return res.status(200).json(JSON.parse(cacheValue));
         }
 
@@ -60,8 +63,8 @@ export const getPosts = async (req, res) => {
         const resData = processResponseData(200, post, NONE, null, { currentPage, maxPage: Math.ceil(total / limit) });
 
         console.log(new Date(), `Set cache to redis, key: ${key}`);
-        redisClient.set(key, JSON.stringify(resData));
-        redisClient.expire(key, 3600);
+        await redisClient.set(key, JSON.stringify(resData));
+        await redisClient.expire(key, 3600);
 
         console.log(new Date(), 'Get posts successful. Find posts count:', post.length, 'totalCount: ', total);
 
@@ -82,6 +85,7 @@ export const getPostById = async (req, res) => {
         const cacheValue = await redisClient.get(id);
           if (cacheValue) {
           console.log(new Date(), `Get Response from Redis, key: ${id}`);
+          await redisClient.expire(id, 3600);
           return res.status(200).json(JSON.parse(cacheValue));
         }
         
@@ -90,8 +94,8 @@ export const getPostById = async (req, res) => {
         const resData = processResponseData(200, post, NONE, null, { currentPage: 1, maxPage: Math.ceil(total / 8) });
 
         console.log(new Date(), `Set cache to redis, key: ${id}`);
-        redisClient.set(id, JSON.stringify(resData));
-        redisClient.expire(id, 3600);
+        await redisClient.set(id, JSON.stringify(resData));
+        await redisClient.expire(id, 3600);
 
         console.log(new Date(), 'Get post successful. Find post count:', post.length);
 
