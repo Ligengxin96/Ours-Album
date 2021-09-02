@@ -46,7 +46,7 @@ const authorize = async (req, res, next) => {
       const cacheValue = await redisClient.get(`uid-${decodeToken.id}`);
       if (cacheValue) {
         console.log(new Date(), `Get Response from Redis, key: uid-${decodeToken.id}`);
-        await redisClient.expire(`uid-${decodeToken.id}`, 10);
+        await redisClient.expire(`uid-${decodeToken.id}`, 3600);
       } else {
         throw new Error(`Can't get token from redis jwt expired.`);
       }

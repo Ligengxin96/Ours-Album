@@ -57,7 +57,7 @@ export const login = async (req, res) => {
 
 				console.log(new Date(), `Set user token to redis, key: uid-${existUser._id}`);
         await redisClient.set(`uid-${existUser._id}`, JSON.stringify(token)); 
-        await redisClient.expire(`uid-${existUser._id}`, 10); 
+        await redisClient.expire(`uid-${existUser._id}`, 3600); 
 	
         res.status(200).json({ userInfo: processUserInfo(existUser, token), errorCode: NONE, isSuccess: true, message: 'Login success.' });
     } catch (error) {
