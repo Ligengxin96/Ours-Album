@@ -25,6 +25,10 @@ redisClient.get = util.promisify(redisClient.get);
 redisClient.set = util.promisify(redisClient.set);
 redisClient.expire = util.promisify(redisClient.expire);
 
+const processStrInSql = (str) => {
+  return str.replace(/['"]/g, '\\$&')
+}
+
 export const getPosts = async (req, res) => { 
     try {
         const { title = '', message = '', tags = [], currentPage = 1, limit = 8 } = req.query;
@@ -44,15 +48,17 @@ export const getPosts = async (req, res) => {
         let sqlQuery = ''
 
         if (title) {
-            sqlQuery = `where title like '%${title}%'`;
+            sqlQuery = `where title like '%${processStrInSql(title)}%'`;
         }
         if (message) {
-            sqlQuery = sqlQuery ? `${sqlQuery} and message like '%${message}%'` : `where message like '%${message}%'`;
+            sqlQuery = sqlQuery ? `${sqlQuery} and message like '%${processStrInSql(message)}%'` : `where message like '%${processStrInSql(message)}%'`;
         }
         if (tags?.length > 0) {
             const tag = tags.split(',').map(tag => `'${tag}'`).join(',');
             sqlQuery = sqlQuery ? `${sqlQuery} and tags in (${tag})` : `where tags in (${tag})`;
         }
+
+        console.log(new Date(), `sql query: ${sqlQuery}`);
 
         const queryCondition = parser.parseSql(sqlQuery);
 
