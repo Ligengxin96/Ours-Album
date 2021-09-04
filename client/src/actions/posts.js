@@ -46,9 +46,9 @@ export const createPost = (newPost) => async (dispatch) => {
   }
 }
 
-export const updatePost = (id, newPost) => async (dispatch) => {
+export const updatePost = (id, newPost, currentPage) => async (dispatch) => {
   try {
-    const { data } = await apis.updatePost(id, newPost);
+    const { data } = await apis.updatePost(id, newPost, currentPage);
     dispatch({ type: UPDATE, payload: data });
     showSuccess('Update post success');
   } catch (error) {     
@@ -59,9 +59,9 @@ export const updatePost = (id, newPost) => async (dispatch) => {
   }
 }
 
-export const likePost = (id) => async (dispatch) => {
+export const likePost = (id, currentPage) => async (dispatch) => {
   try {
-    const { data } = await apis.likePost(id);
+    const { data } = await apis.likePost(id, currentPage);
     dispatch({ type: UPDATE, payload: data });
   } catch (error) {     
     if (error.response) {
@@ -71,9 +71,9 @@ export const likePost = (id) => async (dispatch) => {
   }
 }
 
-export const deletePost = (id) => async (dispatch) => {
+export const deletePost = (id, currentPage) => async (dispatch) => {
   try {
-    const { data } = await apis.deletePost(id);
+    const { data } = await apis.deletePost(id, currentPage);
     dispatch({ type: DELETE, payload: data });
     showSuccess('Delete post success');
   } catch (error) {     

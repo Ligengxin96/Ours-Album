@@ -17,11 +17,10 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-API.interceptors.response.use((res) => {
-    return res;
-  },
+API.interceptors.response.use(
+  (res) => res,
   (error) => {
-    const { response: { status} } = error;
+    const { response: { status } } = error;
     if (status === 403) {
       const info = encodeBase64(JSON.stringify({ error: 403 }));
       localStorage.removeItem('userInfo');
@@ -37,11 +36,11 @@ export const fetchPostById = (id) => API.get(`${postPrefix}/${id}`);
 
 export const createPost = (newPost) => API.post(`${postPrefix}`, newPost);
 
-export const updatePost = (id, newPost) => API.patch(`${postPrefix}/${id}`, newPost);
+export const updatePost = (id, newPost, currentPage) => API.patch(`${postPrefix}/${id}`, { ...newPost, currentPage });
 
-export const likePost = (id) => API.patch(`${postPrefix}/likepost/${id}`);
+export const likePost = (id, currentPage) => API.patch(`${postPrefix}/likepost/${id}`, { currentPage });
 
-export const deletePost = (id) => API.delete(`${postPrefix}/${id}`);
+export const deletePost = (id, currentPage) => API.delete(`${postPrefix}/deletePost/${currentPage}/${id}`);
 
 export const commentPost = (id, comment) => API.post(`${postPrefix}/comment`, { id, comment });
 

@@ -27,8 +27,8 @@ mongoose.connect(databaseConnectStr, {
   useUnifiedTopology: true
 }).then(() => {
   app.listen(port, () => {
-    console.log(`${new Date()} Server running on port: ${port}`);
+    console.log(new Date(), `Server running on port: ${port}`);
   });
 }).catch((error) => {
-  console.log(`${new Date()} Connect mongoose failed with error: ${error.message}`);
+  console.log(new Date(), `Connect mongoose failed with error: ${error.message}`);
 });

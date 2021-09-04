@@ -65,7 +65,7 @@ const Home = () => {
       <Container maxWidth="xl">
         <Grid container justify="space-between" alignItems="stretch" spacing={3} className={classes.gridContainer}>
           <Grid item xs={12} md={9} sm={6}>
-            <Posts setEditingPostId={setEditingPostId} />
+            <Posts setEditingPostId={setEditingPostId} currentPage={currentPage} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
           <AppBar className={classes.appBarSearch} position="static" color="inherit">
@@ -81,7 +81,7 @@ const Home = () => {
               />
             <Button className={classes.searchButton} variant="contained" color="primary" onClick={() => handleSearchClick({ keyCode: 13 })}>Search</Button>
           </AppBar>
-          <Form id={editingPostId} setEditingPostId={setEditingPostId} />
+          <Form id={editingPostId} setEditingPostId={setEditingPostId} currentPage={currentPage} />
           <Paper className={classes.pagination} elevation={6}>
             <Pagination title={title} tags={tags} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </Paper>

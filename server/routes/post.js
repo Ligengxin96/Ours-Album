@@ -14,6 +14,6 @@ router.post('/comment', authorize, commentPost);
 router.patch('/:id', authorize, updatePost);
 router.patch('/likepost/:id', authorize, likePost);
 
-router.delete('/:id', authorize, deletePost);
+router.delete('/deletePost/:currentPage/:id', authorize, deletePost);
 
 export default router;
