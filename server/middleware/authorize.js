@@ -33,15 +33,15 @@ const authorize = async (req, res, next) => {
     const isOursThoken = token?.length < 500;
     
     if (token && isOursThoken) {
-      console.log(`${new Date()}: token (${token}) is ours token`);
+      console.log(new Date(), `Token (${token}) is ours token`);
 
       const decodeToken = jwt.verify(token, secret);
-      console.log(`${new Date()}: resolve ours server token success, user id: ${decodeToken.id}`);
+      console.log(new Date(), `Resolve ours server token success, user id: ${decodeToken.id}`);
 
       req.userId = decodeToken.id;
       req.username = decodeToken.username;
 
-      console.log(`${new Date()}: Check token uid-${decodeToken.id} if expired.`)
+      console.log(new Date(), `Check token uid-${decodeToken.id} whether expired.`)
 
       const cacheValue = await redisClient.get(`uid-${decodeToken.id}`);
       if (cacheValue) {
@@ -52,10 +52,10 @@ const authorize = async (req, res, next) => {
       }
     } else {
       // is google login token
-      console.log(`${new Date()}: token (${token}) is google login token`);
+      console.log(new Date(), `token (${token}) is google login token`);
 
       const decodeToken = jwt.decode(token);
-      console.log(`${new Date()}: resolve google login token success, user id: ${decodeToken.sub}`);
+      console.log(new Date(), `resolve google login token success, user id: ${decodeToken.sub}`);
 
       req.userId = decodeToken.sub;
       req.username = decodeToken.name;
@@ -63,7 +63,7 @@ const authorize = async (req, res, next) => {
     
     next();
   } catch (error) {
-    console.error(`${new Date()}: Resolve token failed with error: ${error.message}`);
+    console.error(new Date(), `Resolve token failed with error: ${error.message}`);
     const resData = processResponseData(403, []);
     res.status(403).json(resData);
   }

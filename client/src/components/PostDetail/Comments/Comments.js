@@ -43,7 +43,7 @@ const Comments = ({ post, user }) => {
           <TextField fullWidth rows={4} variant="outlined" label="Comment" multiline value={comment} onChange={(e) => setComment(e.target.value)} />
           <br />
           <Button style={{ marginTop: '10px' }} fullWidth disabled={comment.length === 0} color="primary" variant="contained" onClick={handleComment}>
-            Submit
+            { comment.length === 0 ? 'Input comment' : 'Submit' }
           </Button>
         </div>
       </div>

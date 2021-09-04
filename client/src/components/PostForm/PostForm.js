@@ -13,7 +13,7 @@ const FIELDS_CONFIG = [
   { name: 'message', label: 'Description', multiline: true, rows: 4 }
 ]
 
-const Form = ({ id, setEditingPostId }) => {
+const Form = ({ id, setEditingPostId, currentPage }) => {
   const classes = useStyles();
   const formRef = useRef();
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const Form = ({ id, setEditingPostId }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if(id) {
-      dispatch(updatePost(id, postData));
+      dispatch(updatePost(id, postData, currentPage));
     } else {
       dispatch(createPost(postData));
     }

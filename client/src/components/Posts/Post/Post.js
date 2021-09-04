@@ -14,7 +14,7 @@ import compressionStr from '../../../utils/compressionStr';
 import nullImage from '../../../images/null.png';
 import useStyles from './styles';
 
-const Post = ({ post, setEditingPostId }) => {
+const Post = ({ post, setEditingPostId, currentPage }) => {
   const user = JSON.parse(localStorage.getItem('userInfo'));
   const userId = user?.googleId || user?.id;
 
@@ -32,12 +32,12 @@ const Post = ({ post, setEditingPostId }) => {
   const deleteThisPost = async () => {
     const result = await DeleteConfirmDialog();
     if (result.isConfirmed) {
-      dispatch(deletePost(post._id));
+      dispatch(deletePost(post._id, currentPage));
     }
   }
 
   const likeThisPost = () => {
-    dispatch(likePost(post._id));
+    dispatch(likePost(post._id, currentPage));
     if (likes.includes(userId)) {
       setLikes(likes.filter(id => userId !== id));
     } else {
