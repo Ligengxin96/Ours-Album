@@ -22,9 +22,10 @@ API.interceptors.response.use(
   (error) => {
     const { response: { status } } = error;
     if (status === 403) {
-      const info = encodeBase64(JSON.stringify({ error: 403 }));
+      const { pathname, search } = window.location;
+      const pathInfo = encodeBase64(JSON.stringify({ pathname, search }));
       localStorage.removeItem('userInfo');
-      window.location = `/login/${info}`;
+      window.location = `/login/${pathInfo}`;
     }
     return Promise.reject(error);
   }

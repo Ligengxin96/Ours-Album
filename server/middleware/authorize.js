@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import util from "util";
 import redis from 'redis';
 
+import { UNAUTH } from '../config/errorCode.js';
 import { processResponseData } from "../utils/processResponseData.js";
 
 dotenv.config();
@@ -64,7 +65,7 @@ const authorize = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(new Date(), process.pid, `Resolve token failed with error: ${error.message}`);
-    const resData = processResponseData(403, []);
+    const resData = processResponseData(403, [], UNAUTH);
     res.status(403).json(resData);
   }
 }

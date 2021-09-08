@@ -4,11 +4,15 @@ import { showError, showSuccess } from '../components/Common/showMessage/showMes
 import { LOGIN, REGISTER } from '../constants/constantsType.js';
 
 
-export const login = (formValues, history) => async (dispatch) => {
+export const login = (formValues, history, path) => async (dispatch) => {
   try {
     const { data } = await apis.login(formValues);
     dispatch({ type: LOGIN, payload: data.userInfo });
-    history.push('/');
+    if (path) {
+      history.push(path);
+    } else {
+      history.push('/');
+    }
     showSuccess(`Welcome ${data?.userInfo?.name}`);
   } catch (error) {
     if (error.response) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, withRouter, useParams } from 'react-router-dom';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
@@ -18,19 +18,22 @@ import useStyles from './styles';
 
 const Authorize = () => {
   const { info } = useParams();
-  let error = null;
+  let pathInfo;
   if (info) {
-    error = JSON.parse(decodeBase64(info)).error;
+    console.log(decodeBase64(info));
+    pathInfo = JSON.parse(decodeBase64(info));
   }
-
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const fromRef = useRef();
+
+  const pathname = pathInfo?.pathname;
+  const search = pathInfo?.search;
+  const path = search ? `${pathname}${search}` : pathname; 
   
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isTokenExpired, setisTokenExpired] = useState(!!error);
   const [errorText, setErrorText] = useState(null);
 
   const [formValues, setFormValues] = useForm({ firstName: '', lastName: '', email: 'useThisAccountOrGoogleAccount@login', password: 'TomAndJerry', confirmPassword: '' });
@@ -44,13 +47,17 @@ const Authorize = () => {
   }
 
   const googleSuccess = async (res) => {
-    setisTokenExpired(false);
     dispatch({ type: LOGIN, payload: { ...res.profileObj, token: res.tokenId } });
-    history.push('/');
+    if (path) {
+      history.push(path);
+    } else {
+      history.push('/');
+    }
     showSuccess('Google account login Success');
   };
 
   const googleError = (error) => {
+    if (error && !error.error) return;
     if (error.error !== 'popup_closed_by_user') {
       showError('Google account login failed');
       console.error(`Google account login failed with error: ${JSON.stringify(error)}`);
@@ -68,15 +75,9 @@ const Authorize = () => {
       }
       dispatch(register({...formValues, password, confirmPassword }, history));
     } else {
-      dispatch(login({...formValues, password }, history));
+      dispatch(login({...formValues, password }, history, path));
     }
   }
-
-  useEffect(() => {
-    if (isTokenExpired) {
-      showError('Certification expired, please login again');
-    }
-  }, [isTokenExpired])
 
   return (
     <Container component='main' maxWidth='xs'>
