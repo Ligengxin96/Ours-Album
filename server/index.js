@@ -1,5 +1,5 @@
 import { cpus } from 'os';
-import cluster from"cluster";
+import cluster from 'cluster';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
