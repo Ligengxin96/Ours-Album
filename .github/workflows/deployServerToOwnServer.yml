@@ -18,12 +18,13 @@ jobs:
           CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: CONNECTION_URL,JWT_SECRET,REDIS_HOST,REDIS_PASSWORD
+          envs: CONNECTION_URL,JWT_SECRET,REDIS_HOST,REDIS_PORT,REDIS_PASSWORD
           script: |
             if [ ! -d "./server/Ours-Album" ]; then
               cd  ./server
@@ -39,6 +40,7 @@ jobs:
             -e CONNECTION_URL=$CONNECTION_URL \
             -e JWT_SECRET=$JWT_SECRET \
             -e REDIS_HOST=$REDIS_HOST \
+            -e REDIS_PORT=$REDIS_PORT \
             -e REDIS_PASSWORD=$REDIS_PASSWORD \
             -p 5000:5000 --net userDefined --ip 172.20.0.5 \
             --restart=always -d --name ours-album ours-album

@@ -14,14 +14,19 @@ dotenv.config();
 const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASSWORD,
-    port: 6379,
+    port: process.env.REDIS_PORT || 6379,
     retry_strategy: () => 1000,
     connect_timeout: 10000
 });
 
+redisClient.on('connect', () => {
+    console.log(new Date(), process.pid, 'Redis connected');
+});
+
 redisClient.on('error', (error) => {
-  console.log(new Date(), process.pid, `Redis error: ${error.message}`);
-})
+    console.log(new Date(), process.pid, `Redis error: ${error.message}`);
+});
+
 
 redisClient.get = util.promisify(redisClient.get);
 redisClient.set = util.promisify(redisClient.set);
@@ -30,24 +35,24 @@ redisClient.keys = util.promisify(redisClient.keys);
 redisClient.del = util.promisify(redisClient.del);
 
 const processStrInSql = (str) => {
-  return str.replace(/['"]/g, '\\$&')
+    return str.replace(/['"]/g, '\\$&')
 }
 
-export const getPosts = async (req, res) => { 
+export const getPosts = async (req, res) => {
     try {
         const { title = '', message = '', tags = [], currentPage = 1, limit = 8 } = req.query;
-        
+
         console.log(new Date(), process.pid, `Finding posts, title is '${title}', message is '${message}', tags is '${tags}', currentPage is ${currentPage}`);
 
         const key = `-${title}-${message}-${tags}-${currentPage}`;
         const cacheValue = await redisClient.get(key);
-          if (cacheValue) {
-          console.log(new Date(), process.pid, `Get Response from Redis, key: ${key}`);
-          await redisClient.expire(key, 1800);
-          return res.status(200).json(JSON.parse(cacheValue));
+        if (cacheValue) {
+            console.log(new Date(), process.pid, `Get Response from Redis, key: ${key}`);
+            await redisClient.expire(key, 1800);
+            return res.status(200).json(JSON.parse(cacheValue));
         }
 
-        const startIndex = (currentPage - 1) * limit; 
+        const startIndex = (currentPage - 1) * limit;
         const parser = new SQLParser();
         let sqlQuery = ''
 
@@ -67,16 +72,16 @@ export const getPosts = async (req, res) => {
         const queryCondition = parser.parseSql(sqlQuery);
 
         console.log(new Date(), process.pid, `queryCondition: ${JSON.stringify(queryCondition)}`);
-        
+
         const total = await PostModel.countDocuments(queryCondition);
         const post = await PostModel.find(queryCondition).sort({ createdTime: 1 }).skip(startIndex % total).limit(limit);
         const resData = processResponseData(200, post, NONE, null, { currentPage, maxPage: Math.ceil(total / limit) });
-        
+
         console.log(new Date(), process.pid, `Set cache to redis, key: ${key}`);
         await redisClient.set(key, JSON.stringify(resData));
         await redisClient.expire(key, 1800);
 
-        console.log(new Date(), process.pid, `Get posts successful. Find posts count: ${post.length}, totalCount: ${total}, currentPage: ${currentPage}, maxPage: ${ Math.ceil(total / limit) }`);
+        console.log(new Date(), process.pid, `Get posts successful. Find posts count: ${post.length}, totalCount: ${total}, currentPage: ${currentPage}, maxPage: ${Math.ceil(total / limit)}`);
 
         res.status(200).json(resData);
     } catch (error) {
@@ -86,19 +91,19 @@ export const getPosts = async (req, res) => {
     }
 }
 
-export const getPostById = async (req, res) => { 
+export const getPostById = async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         console.log(new Date(), process.pid, `Finding post by id, id is ${id}`);
 
         const cacheValue = await redisClient.get(id);
-          if (cacheValue) {
-          console.log(new Date(), process.pid, `Get Response from Redis, key: ${id}`);
-          await redisClient.expire(id, 1800);
-          return res.status(200).json(JSON.parse(cacheValue));
+        if (cacheValue) {
+            console.log(new Date(), process.pid, `Get Response from Redis, key: ${id}`);
+            await redisClient.expire(id, 1800);
+            return res.status(200).json(JSON.parse(cacheValue));
         }
-        
+
         const post = await PostModel.findById(id);
         const total = await PostModel.countDocuments();
         const resData = processResponseData(200, post, NONE, null, { currentPage: 1, maxPage: Math.ceil(total / 8) });
@@ -134,7 +139,7 @@ export const createPost = async (req, res) => {
         console.log(new Date(), process.pid, 'Create post successful. New post id:', savedPostMessage._id);
 
         const total = await PostModel.countDocuments({});
-        console.log(total, Math.ceil(total / 8),`*-${Math.ceil(total / 8)}`);
+        console.log(total, Math.ceil(total / 8), `*-${Math.ceil(total / 8)}`);
         await deleteCache(redisClient, '-*');
 
         res.status(201).json(resData);
@@ -187,7 +192,7 @@ export const likePost = async (req, res) => {
         const { id } = req.params;
         const { currentPage } = req.body
         console.log(new Date(), process.pid, `Likeing post, userId: ${userId}, postId: ${id}, currentPage: ${currentPage}`);
-        
+
         if (!userId) {
             const resData = processResponseData(403, [], UNAUTH);
             console.log(new Date(), process.pid, 'Likeing post faild, access denied.');
@@ -258,7 +263,7 @@ export const deletePost = async (req, res) => {
 
 export const commentPost = async (req, res) => {
     try {
-        const { userId } = req;        
+        const { userId } = req;
         const { id, comment } = req.body;
         console.log(new Date(), process.pid, `Commenting post, userId: ${userId}, postId: ${id}, comment: ${comment}`);
 
@@ -279,7 +284,7 @@ export const commentPost = async (req, res) => {
         console.log(new Date(), process.pid, 'Comment post successful. Delete post id:', commentedPost._id);
 
         await deleteCache(redisClient, id);
- 
+
         res.status(200).json(resData);
     } catch (error) {
         const resData = processResponseData(500, [], SERVER_UNKNOWN_ERROR, error.message);
