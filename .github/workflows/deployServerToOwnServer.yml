@@ -42,5 +42,5 @@ jobs:
             -e REDIS_HOST=$REDIS_HOST \
             -e REDIS_PORT=$REDIS_PORT \
             -e REDIS_PASSWORD=$REDIS_PASSWORD \
-            -p 5000:5000 --net userDefined --ip 172.20.0.5 \
+            -p 5000:5000 --net userDefined \
             --restart=always -d --name ours-album ours-album
