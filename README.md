@@ -15,9 +15,9 @@ The client folder is frontend project and the server folder is backend project
 
 ## `2022-12-30` To `2024-11-21` Ours-Album repo traffic data
 
-Total views data: `{ count: 1858, uniques: 436 }`
+Total views data: `{ count: 1859, uniques: 437 }`
 
-Total clones data: `{ count: 1238, uniques: 934 }`
+Total clones data: `{ count: 1240, uniques: 936 }`
 
 
 
