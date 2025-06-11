@@ -13,11 +13,11 @@ The client folder is frontend project and the server folder is backend project
 2. In both clinet folder and server folder run: `yarn` or `npm install` to install dependencies
 3. In both clinet folder and server folder run: `yarn start` or `npm start` to start the server in localhost
 
-## `2022-12-30` To `2025-06-09` Ours-Album repo traffic data
+## `2022-12-30` To `2025-06-10` Ours-Album repo traffic data
 
-Total views data: `{ count: 2004, uniques: 509 }`
+Total views data: `{ count: 2005, uniques: 510 }`
 
-Total clones data: `{ count: 1591, uniques: 1259 }`
+Total clones data: `{ count: 1592, uniques: 1261 }`
 
 
 
