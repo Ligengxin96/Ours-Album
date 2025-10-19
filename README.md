@@ -17,7 +17,7 @@ The client folder is frontend project and the server folder is backend project
 
 Total views data: `{ count: 2097, uniques: 543 }`
 
-Total clones data: `{ count: 1766, uniques: 1426 }`
+Total clones data: `{ count: 1766, uniques: 1427 }`
 
 
 
